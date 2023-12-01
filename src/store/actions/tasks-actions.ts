@@ -26,6 +26,7 @@ type EditTaskActionType = {
         id: string
         todoListID: string
         title: string
+        status: TaskStatuses
     }
 }
 
@@ -73,8 +74,8 @@ export const AddTasktAC = (task: Task): AddTaskActionType => {
     return {type: 'ADD-TASK',payload: {task}}
 }
 
-export const EditTaskAC = (title: string, id: string, todoListID: string): EditTaskActionType => {
-    return {type: 'EDIT-TASK',payload: {title, id, todoListID}}
+export const EditTaskAC = (title: string, status: TaskStatuses, id: string, todoListID: string): EditTaskActionType => {
+    return {type: 'EDIT-TASK',payload: {title, status, id, todoListID}}
 }
 export const ToggleTaskAC = (id: string, todoListID: string, status: TaskStatuses): ToggleTaskActionType => {
     return {type: 'TOGGLE-TASK',payload: {id, todoListID, status}}

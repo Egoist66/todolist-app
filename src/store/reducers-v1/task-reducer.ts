@@ -37,7 +37,7 @@ export const tasksReducer = (state: TasksElems = initialState, action: ActionTas
             return {
                 ...state,
                 [action.payload.todoListID]: state[action.payload.todoListID]
-                    .map(t => t.id === action.payload.id ? { ...t, title: action.payload.title } : t)
+                    .map(t => t.id === action.payload.id ? { ...t, title: action.payload.title, status: action.payload.status} : t)
             }
 
         }

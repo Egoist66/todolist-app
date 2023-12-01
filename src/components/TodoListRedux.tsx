@@ -2,6 +2,7 @@ import { FilterProps, PropsType } from "../types/Types";
 import { FC, memo, useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Task } from "./Task";
+
 import Editable from "./Editable";
 import { Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,6 +26,7 @@ export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID
     const { useAppSelector, dispatch } = useStore()
     const tasks = useAppSelector(state => state.tasks)
     const { onDeleteAllTasks } = useTodoList()
+
 
 
     const initFilteredTasks = () => {
@@ -76,6 +78,9 @@ export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID
                 editableType={"h2"}
                 onSaveEdits={(title, todoListID) => dispatch(updateTodoList(todoListID, title))}
             />
+
+
+
 
             <View _margin={'20px 0px 20px 0px'}>
                 <Button

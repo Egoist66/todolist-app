@@ -41,7 +41,7 @@ export enum TaskPriorities {
 }
 
 
-type UpdateModelType = {
+export type UpdateModelType = {
     title: string,
     status: TaskStatuses,
     priority: TaskPriorities,
@@ -90,30 +90,25 @@ export const todolistTasksAPI = {
 
     },
 
-    async updateTasks(dispatch: AppDispatch, todolistID: string, id: string, title: string) {
+    async updateTasks(todolistID: string, id: string, title: string, status: TaskStatuses) {
         const { data: { data } } = await instance.put(
             `todo-lists/${todolistID}/tasks/${id}`,
-            { title },
+            { title, status},
         )
 
-        dispatch(EditTaskAC(data.item.title, data.item.id, data.item.todoListId))
+        
+        return data.item
+
 
     },
-    async updateCompletedTasks(dispatch: AppDispatch, todolistID: string, id: string, model: UpdateModelType) {
+    async updateCompletedTasks(todolistID: string, id: string, model: UpdateModelType) {
         const { data } = await instance.put(
             `todo-lists/${todolistID}/tasks/${id}`,
             model,
         )
+        
 
-        console.log(data)
-
-
-        dispatch(ToggleTaskAC(
-            id, 
-            todolistID, 
-            data.data.item.status
-        ))
-
+        return data.data.item
 
     }
 

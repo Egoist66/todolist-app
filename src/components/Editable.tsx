@@ -17,7 +17,6 @@ type EditStateType = {
 }
 
 const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskID, editableType}) => {
-    console.log('editable')
     const [state, setState] = useState<EditStateType>({
         editMode: false,
         title: title
@@ -54,7 +53,6 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
                     autoFocus
                     onBlur={onBlurOffEditMode}
                     onChange={handleChangeTitle}
-                    onDoubleClick={activateEditMode}
                     value={state.title} type="text"
                     label="Edit title"
                 />

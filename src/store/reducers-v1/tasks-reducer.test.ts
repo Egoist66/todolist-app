@@ -51,7 +51,7 @@ test('should edit task', () => {
 
     const endState = tasksReducer(
         initialState,
-        EditTaskAC(newTitle, '1', todoList1)
+        EditTaskAC(newTitle, 1, '1', todoList1)
     )
     console.log(endState)
 

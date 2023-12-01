@@ -4,9 +4,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Editable from "./Editable";
 import { useStore } from "../hooks/useStore";
 import { FC, memo } from "react";
-import { todolistTasksAPI } from "../api/todolist-tasks-api";
-import { RemoveTaskAC } from "../store/actions/tasks-actions";
 import { deleteTasks } from "../store/async-thunks/tasks-thunks/deleteTasks";
+import { toggleTasks } from "../store/async-thunks/tasks-thunks/toggleTasks";
+import { updateTasks } from "../store/async-thunks/tasks-thunks/updateTasks";
 
 
 export const Task: FC<TaskTypeProps> = memo(({ data }) => {
@@ -16,10 +16,14 @@ export const Task: FC<TaskTypeProps> = memo(({ data }) => {
 
 
     return (
-        <li key={id}>
+        <li style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+        }} key={id}>
 
             <Checkbox
-                onChange={(e) => todolistTasksAPI.updateCompletedTasks(dispatch, todoListId, id, {
+                onChange={(e) => dispatch(toggleTasks(todoListId, id,    {
 
                     status: e.currentTarget.checked ? 2 : 1,
                     title,
@@ -28,7 +32,7 @@ export const Task: FC<TaskTypeProps> = memo(({ data }) => {
                     description: 'task',
                     deadline: ''
 
-                })}
+                }))}
                 id={id}
                 className={'task_input'}
                 checked={status === 2}
@@ -37,17 +41,15 @@ export const Task: FC<TaskTypeProps> = memo(({ data }) => {
                 color="primary"
             />
 
-            <label htmlFor={id} className={'task_name'}>
                 <Editable
                     editableType={'span'}
                     title={title}
                     todoListID={todoListId}
                     taskID={id}
                     onSaveEdits={(title, todoListID, id) =>
-                        todolistTasksAPI.updateTasks(dispatch, todoListID, id, title
-                        )}
+                        dispatch(updateTasks(todoListID, id, title, status)
+                    )}
                 />
-            </label>
 
             <IconButton onClick={() => dispatch(deleteTasks(todoListId, id))} aria-label="delete">
                 <DeleteIcon />
