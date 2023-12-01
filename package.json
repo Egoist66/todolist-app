@@ -2,7 +2,7 @@
   "name": "1-lesson",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Egoist66/todolist-incubator.git",
+  "homepage": "https://github.com/Egoist66/todolist-app",
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
@@ -38,7 +38,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [

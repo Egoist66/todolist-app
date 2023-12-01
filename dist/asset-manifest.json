@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Egoist66/todolist-app/static/css/main.eb82aef0.css",
+    "main.js": "/Egoist66/todolist-app/static/js/main.6dc9fbc2.js",
+    "static/media/error.gif": "/Egoist66/todolist-app/static/media/error.42292aa12b6bc303ce99.gif",
+    "index.html": "/Egoist66/todolist-app/index.html",
+    "main.eb82aef0.css.map": "/Egoist66/todolist-app/static/css/main.eb82aef0.css.map",
+    "main.6dc9fbc2.js.map": "/Egoist66/todolist-app/static/js/main.6dc9fbc2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eb82aef0.css",
+    "static/js/main.6dc9fbc2.js"
+  ]
+}
