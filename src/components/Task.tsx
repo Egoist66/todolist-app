@@ -14,6 +14,9 @@ export const Task: FC<TaskTypeProps> = memo(({ data }) => {
     const { id, status, title, todoListId } = data
     const { dispatch } = useStore()
 
+    console.log(status);
+    
+
 
     return (
         <li style={{

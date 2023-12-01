@@ -37,7 +37,7 @@ export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID
                 case "Completed":
                     return task.status === 2;
                 case "Active":
-                    return task.status === 1;
+                    return (task.status ===  0) || (task.status === 1);
                 default:
                     return task
             }
