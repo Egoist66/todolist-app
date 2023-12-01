@@ -1,0 +1,66 @@
+.App {
+    padding: 30px 0px;
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, serif;
+}
+
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+.done-task {
+    opacity: 0.6;
+}
+
+.error-msg {
+    color: red;
+
+}
+
+#title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.todo-form {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+}
+
+.todo-item {
+    box-shadow: 1px 1px 2px 1px gainsboro;
+    padding: 20px;
+    border-radius: 5px;
+    height: max-content;
+    transition: 1s all ease;
+}
+
+.deleting-todo.todo-item {
+    opacity: 0;
+    transition: 1s all ease;
+    animation: deleteTodo 1s ease alternate;
+}
+
+@keyframes deleteTodo {
+    0% {
+        transform: translateX(50px);
+        transition: 1s all ease;
+
+    }
+    100% {
+        transform: translate(0px);
+        transition: 1s all ease;
+
+    }
+}
