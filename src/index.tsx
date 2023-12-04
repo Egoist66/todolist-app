@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import {store} from "./store/store";
 
 import './App.css'
+import './store/native-test/class'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
