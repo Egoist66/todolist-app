@@ -1,11 +1,11 @@
-import {AnyAction, applyMiddleware, combineReducers, createStore} from "redux";
-import { todolistReducer } from "./reducers-v1/todolist-reducer";
+import {applyMiddleware, combineReducers, createStore} from "redux";
+import {todolistReducer} from "./reducers-v1/todolist-reducer";
 import {tasksReducer} from "./reducers-v1/task-reducer";
 import thunk, {ThunkAction} from 'redux-thunk'
 import {composeWithDevTools} from "@redux-devtools/extension";
 import createSagaMiddleware from 'redux-saga'
-import { rootSaga } from "./sagas/deleteTodoSaga";
-import { catchUIReducer } from "./reducers-v1/catch-ui-reducer";
+import {rootSaga} from "./sagas/deleteTodoSaga";
+import {catchUIReducer} from "./reducers-v1/catch-ui-reducer";
 import {ActionTasksTypes} from "./actions/tasks-actions";
 import {ActionTodosTypes} from "./actions/todos-actions";
 import {AppRootState} from "../hooks/useStore";

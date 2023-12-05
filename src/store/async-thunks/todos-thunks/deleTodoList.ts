@@ -1,8 +1,8 @@
-import { ThunkDispatch } from "redux-thunk";
-import { todoListAPI } from "../../../api/todo-lists-api";
-import { AppRootState } from "../../../hooks/useStore";
-import { ActionTodosTypes, ChangeTodolistTitleAC, RemoveTodolistAC } from "../../actions/todos-actions";
-import { CatchUIActions, SetDeletetAC } from "../../actions/ui-actions";
+import {ThunkDispatch} from "redux-thunk";
+import {todoListAPI} from "../../../api/todo-lists-api";
+import {AppRootState} from "../../../hooks/useStore";
+import {ActionTodosTypes, RemoveTodolistAC} from "../../actions/todos-actions";
+import {SetDeletetAC} from "../../actions/ui-actions";
 
 
 export const deleteTodoList = (id: string): any => {
