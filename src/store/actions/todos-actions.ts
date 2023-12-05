@@ -1,4 +1,5 @@
-import { TodoListAPIType } from "../../api/todo-lists-api"
+import {TodoListAPIType} from "../../api/todo-lists-api"
+import {CatchUIActions} from "./ui-actions";
 
 export type RemoveTodoActionType = {
     type: 'REMOVE-TODOLIST'
@@ -35,57 +36,57 @@ export type ChangeTodoListTitleActionType = {
 export type FetchTodosActionType = {
     type: 'FETCH-TODOS',
     payload: {
-        todos:  Array<TodoListAPIType>
+        todos: Array<TodoListAPIType>
     }
 }
 
 export type InitDeleteActionType = {
     type: 'INIT-DELETE',
     payload: {
-        isDeleted:  boolean
+        isDeleted: boolean
         id: string
     }
 }
 
 
-
 export type ActionTodosTypes =
-    RemoveTodoActionType
-    | SetTodoListActionType
-    | ChangeTodoListTitleActionType
-    | FetchTodosActionType
-    | RequestForRemoveTodoActionType
-    | InitDeleteActionType
+    ReturnType<typeof RemoveTodolistAC>
+    | ReturnType<typeof SetTodolistAC>
+
+    | ReturnType<typeof ChangeTodolistTitleAC>
+
+    | ReturnType<typeof FetchTodosAC>
+
+    | ReturnType<typeof RequestRemoveTodolistAC>
+
+    | ReturnType<typeof InitDeleteAC>
+
+    | CatchUIActions
 
 
-
-
-
-
-
-export const RemoveTodolistAC = (id: string): RemoveTodoActionType => {
-    return { type: 'REMOVE-TODOLIST', payload: { id } }
+export const RemoveTodolistAC = (id: string) => {
+    return {type: 'REMOVE-TODOLIST', payload: {id}} as const
 }
 
-export const RequestRemoveTodolistAC = (id: string): RequestForRemoveTodoActionType => {
-    return { type: 'REQUEST-REMOVE-TODOLIST', payload: { id } }
+export const RequestRemoveTodolistAC = (id: string) => {
+    return {type: 'REQUEST-REMOVE-TODOLIST', payload: {id}} as const
 }
 
-export const SetTodolistAC = (title: string, id: string): SetTodoListActionType => {
-    return { type: 'SET-TODO', payload: { title, id } }
+export const SetTodolistAC = (title: string, id: string) => {
+    return {type: 'SET-TODO', payload: {title, id}} as const
 }
 
 
-export const ChangeTodolistTitleAC = (title: string, id: string): ChangeTodoListTitleActionType => {
-    return { type: 'CHANGE-TODOLIST-TITLE', payload: { id, title } }
+export const ChangeTodolistTitleAC = (title: string, id: string) => {
+    return {type: 'CHANGE-TODOLIST-TITLE', payload: {id, title}} as const
 }
 
-export const FetchTodosAC = (todos: TodoListAPIType[]): FetchTodosActionType => {
-    return { type: 'FETCH-TODOS', payload: {todos}}
+export const FetchTodosAC = (todos: TodoListAPIType[]) => {
+    return {type: 'FETCH-TODOS', payload: {todos}} as const
 }
 
-export const InitDeleteAC = (isDeleted: boolean, id: string): InitDeleteActionType => {
-    return { type: 'INIT-DELETE', payload: {isDeleted, id}}
+export const InitDeleteAC = (isDeleted: boolean, id: string) => {
+    return {type: 'INIT-DELETE', payload: {isDeleted, id}} as const
 }
 
 

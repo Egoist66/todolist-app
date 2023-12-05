@@ -1,5 +1,6 @@
-import {SetTodoListActionType, RemoveTodoActionType, FetchTodosActionType} from "./todos-actions";
 import {ResponseTaskType, TaskStatuses} from "../../api/todolist-tasks-api";
+import {CatchUIActions} from "./ui-actions";
+import {FetchTodosActionType, RemoveTodoActionType, SetTodoListActionType} from "./todos-actions";
 
 
 type Task = {title: string, id: string, status: TaskStatuses, todoListId: string}
@@ -65,6 +66,7 @@ export type ActionTasksTypes = AddTaskActionType
     | RemoveTodoActionType
     | FetchTodosActionType
     | FetchTasksActionType
+    | CatchUIActions
 
 export const RemoveTaskAC = (id: string, todoListID: string): RemoveTaskActionType => {
     return {type: 'REMOVE-TASK',payload: {id, todoListID}}

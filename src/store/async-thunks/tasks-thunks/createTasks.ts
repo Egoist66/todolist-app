@@ -13,8 +13,6 @@ export const createTasks = ({title, todoListID}: CreateTasksThunkProps): any => 
     return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTasksTypes>) => {
         try {
             const task = await todolistTasksAPI.createTasks(todoListID, title)
-            
-                
             dispatch(AddTasktAC(task))
 
         }

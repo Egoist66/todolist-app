@@ -1,16 +1,13 @@
-import { FC, memo, useEffect, useMemo } from "react";
-import { useStore } from "../hooks/useStore";
-import { TodoListRedux } from "./TodoListRedux";
-import { Header } from "./Header";
-import { Container, Grid } from "@material-ui/core";
-import { View } from "../service-components/View/View";
-import { TodoForm } from "./TodoForm";
-import { todoListAPI } from "../api/todo-lists-api";
-import { useStatus } from "../hooks/useStatus";
-import { fetchTodos } from "../store/async-thunks/todos-thunks/fetchTodos";
-import { createTodoList } from "../store/async-thunks/todos-thunks/createTodoList";
+import {FC, memo, useEffect, useMemo} from "react";
+import {useStore} from "../hooks/useStore";
+import {TodoListRedux} from "./TodoListRedux";
+import {Header} from "./Header";
+import {Container, Grid} from "@material-ui/core";
+import {View} from "../service-components/View/View";
+import {TodoForm} from "./TodoForm";
+import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
+import {createTodoList} from "../store/async-thunks/todos-thunks/createTodoList";
 import ErrorBoundary from "../service-components/error-boundary/ErrorBoundary";
-import { createTasks } from "../store/async-thunks/tasks-thunks/createTasks";
 import Preloader from "../service-components/preloader/preloader";
 
 export const AppLayout: FC = memo(() => {
@@ -50,7 +47,9 @@ export const AppLayout: FC = memo(() => {
                     <TodoForm
                         placeholder="Enter a todo title"
                         formName={"Add new todo"}
-                        onTodoFormHandler={(title: string) => dispatch(createTodoList(title))}
+                        onTodoFormHandler={(title: string) => {
+                            dispatch(createTodoList(title));
+                        }}
                     />
                 </View>
             </Container>

@@ -6,7 +6,7 @@ import { CatchUIActions, SetDeletetAC } from "../../actions/ui-actions";
 
 
 export const deleteTodoList = (id: string): any => {
-    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTodosTypes | CatchUIActions>) => {
+    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTodosTypes>) => {
 
         try {
             const todo = await todoListAPI.deleteTodoList(id)

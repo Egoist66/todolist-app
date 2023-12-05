@@ -1,25 +1,27 @@
-import { ThunkDispatch } from "redux-thunk";
-import { todoListAPI } from "../../../api/todo-lists-api";
-import { AppRootState } from "../../../hooks/useStore";
-import { ActionTasksTypes } from "../../actions/tasks-actions";
-import { SetTodolistAC } from "../../actions/todos-actions";
-import { CatchErrorAC, CatchUIActions, ErrorResetAC, SetLoadingtAC } from "../../actions/ui-actions";
+import {ThunkDispatch, ThunkAction} from "redux-thunk";
+import {todoListAPI} from "../../../api/todo-lists-api";
+import {AppRootState} from "../../../hooks/useStore";
+import {ActionTasksTypes} from "../../actions/tasks-actions";
+import {SetTodolistAC} from "../../actions/todos-actions";
+import {CatchErrorAC, ErrorResetAC, SetLoadingtAC} from "../../actions/ui-actions";
+import {AppThunk} from "../../store";
 
 
-export const createTodoList = (title: string): any => {
-    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTasksTypes | CatchUIActions>) => {
+export const createTodoList = (title: string): AppThunk => {
+    return async (dispatch) => {
         try {
             dispatch(SetLoadingtAC(true))
             dispatch(ErrorResetAC())
 
             const todo = await todoListAPI.createTodoList(title)
-
             dispatch(SetTodolistAC(todo.title, todo.id))
+
+
 
         }
         catch (e) {
 
-            console.log(e);
+            console.error(e);
             dispatch(CatchErrorAC())
 
 
