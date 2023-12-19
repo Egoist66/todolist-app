@@ -11,7 +11,7 @@ export const createTodoList = (title: string): AppThunk => {
             dispatch(ErrorResetAC())
 
             const todo = await todoListAPI.createTodoList(title)
-            dispatch(SetTodolistAC(todo.title, todo.id))
+            dispatch(SetTodolistAC(todo?.title, todo?.id))
 
 
 

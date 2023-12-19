@@ -30,6 +30,10 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
     }
 
     const onBlurOffEditMode = () => {
+        if(!state.title.length || state.title.length >= 100){
+            return
+        }
+
         setState({
             ...state,
             editMode: false
@@ -46,18 +50,31 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
         })
     }
 
+    const evalNotification = () => {
+        if(!state.title.length){
+            return 'Empty Values!'
+        }
+
+        if(state.title.length >= 100){
+            return 'Maximum symbols 100!'
+        }
+    }
     return (
         state.editMode
             ?
                 <TextField
                     autoFocus
                     onBlur={onBlurOffEditMode}
+                    onKeyDown={(e) => {
+                        if(e.key === 'Enter'){
+                            onBlurOffEditMode()
+                        }
+                    }}
                     onChange={handleChangeTitle}
                     value={state.title} type="text"
-                    label="Edit title"
+                    color={!state.title || state.title.length >= 100 ? 'secondary' : 'primary'}
+                    label={evalNotification()}
                 />
-
-
 
 
             : <Text type={editableType} onClickHandler={activateEditMode}>{state.title}</Text>

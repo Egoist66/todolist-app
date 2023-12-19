@@ -1,7 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects';
 function* logActions(action: any){
      console.table(action);
-     
      yield 
 }
 

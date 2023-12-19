@@ -41,7 +41,7 @@ export type Todos = {
 export type TaskType = {
     id: string;
     title: string;
-    todoListId: string
+    todoListId: string;
     status: TaskStatuses;
 }
   
@@ -61,6 +61,7 @@ export type PropsType = {
 export type TodoFormPropsType = {
     onTodoFormHandler: (title: string, todoListId: string) => void,
     todoListId?: string,
+    restrictedQuantity?: [{data: TodoListProps[], quantity: number}]
     formName:string
     placeholder: string
 

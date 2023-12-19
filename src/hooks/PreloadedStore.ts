@@ -11,9 +11,7 @@ export const PreloadedStore = () => {
         return () => {
             const persistedString = localStorage.getItem(key)
             if(persistedString){
-                const parsedStore = JSON.parse(persistedString)
-
-                return parsedStore
+                return JSON.parse(persistedString)
             }
         }
     }

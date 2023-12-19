@@ -1,8 +1,8 @@
-import { AppRootState } from "../../../hooks/useStore";
-import { ThunkDispatch } from "redux-thunk";
-import { ActionTasksTypes, FetchTasksAC } from "../../actions/tasks-actions";
-import { todolistTasksAPI } from "../../../api/todolist-tasks-api";
-
+import {AppRootState} from "../../../hooks/useStore";
+import {ThunkDispatch} from "redux-thunk";
+import {ActionTasksTypes, FetchTasksAC} from "../../actions/tasks-actions";
+import {todolistTasksAPI} from "../../../api/todolist-tasks-api";
+import {CatchErrorAC} from "../../actions/ui-actions";
 
 
 export const fetchTasks = (todoListID:  string): any => {
@@ -18,8 +18,10 @@ export const fetchTasks = (todoListID:  string): any => {
         }
         catch(e){
             console.log(e);
+            dispatch(CatchErrorAC())
 
         }
+
     }
 }
 

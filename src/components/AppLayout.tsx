@@ -2,7 +2,7 @@ import {FC, memo, useEffect, useMemo} from "react";
 import {useStore} from "../hooks/useStore";
 import {TodoListRedux} from "./TodoListRedux";
 import {Header} from "./Header";
-import {Container, Grid} from "@material-ui/core";
+import {Container, Grid, LinearProgress} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {TodoForm} from "./TodoForm";
 import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
@@ -12,11 +12,9 @@ import Preloader from "../service-components/preloader/preloader";
 
 export const AppLayout: FC = memo(() => {
 
-    const { useAppSelector, dispatch } = useStore()
+    const {useAppSelector, dispatch} = useStore()
     const todos = useAppSelector(state => state.todos.todos)
-    const { isError, isLoading } = useAppSelector(state => state.ui)
-
-
+    const {isError, isLoading} = useAppSelector(state => state.ui)
 
 
     useEffect(() => {
@@ -24,7 +22,6 @@ export const AppLayout: FC = memo(() => {
         dispatch(fetchTodos())
 
     }, [])
-
 
 
     const TodoElems = useMemo(() => (
@@ -39,13 +36,18 @@ export const AppLayout: FC = memo(() => {
     ), [todos])
     return (
         <>
-            <Header />
+
+            <Header/>
 
 
             <Container fixed>
                 <View _margin="30px 0px 0px 0px" id="form-view">
                     <TodoForm
                         placeholder="Enter a todo title"
+                        restrictedQuantity={[{
+                            data: todos,
+                            quantity: 10
+                        }]}
                         formName={"Add new todo"}
                         onTodoFormHandler={(title: string) => {
                             dispatch(createTodoList(title));
@@ -58,12 +60,12 @@ export const AppLayout: FC = memo(() => {
                 <Grid className="App">
 
                     <ErrorBoundary
-                        onTryhandler={() => dispatch(createTodoList('Try todo, remove then'))}
+                        onTryhandler={() => dispatch(fetchTodos())}
                         error={isError}>
 
                         <Preloader isLoading={isLoading} afterSpinner={() => (
                             TodoElems
-                        )} />
+                        )}/>
 
                     </ErrorBoundary>
 
