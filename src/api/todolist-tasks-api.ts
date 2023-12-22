@@ -1,7 +1,6 @@
-import { instance } from "./todo-lists-api";
-import { Dispatch } from "redux";
-import { EditTaskAC, RemoveAllTasksAC, RemoveAllTasksActionType, ToggleTaskAC } from "../store/actions/tasks-actions";
-import { AppDispatch } from "../hooks/useStore";
+import {instance} from "./todo-lists-api";
+import {Dispatch} from "redux";
+import {RemoveAllTasksAC, RemoveAllTasksActionType} from "../store/actions/tasks-actions";
 
 export type ResponseRootTask<T> = {
     error: string | null

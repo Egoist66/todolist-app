@@ -1,7 +1,5 @@
-import {ActionTodosTypes, FetchTodosAC} from "../../actions/todos-actions";
+import {FetchTodosAC} from "../../actions/todos-actions";
 import {todoListAPI} from '../../../api/todo-lists-api';
-import {CatchErrorAC, ErrorResetAC, SetLoadingtAC} from "../../actions/ui-actions";
-import {Dispatch} from "redux";
 import {AppThunk} from "../../store";
 import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
 

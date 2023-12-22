@@ -1,6 +1,5 @@
 import {todoListAPI} from "../../../api/todo-lists-api";
 import {SetTodolistAC} from "../../actions/todos-actions";
-import {CatchErrorAC, ErrorResetAC, SetLoadingtAC} from "../../actions/ui-actions";
 import {AppThunk} from "../../store";
 import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
 
