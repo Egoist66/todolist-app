@@ -1,9 +1,8 @@
-import {ChangeEvent, FC, memo, useCallback, useEffect, useState} from "react"
+import {ChangeEvent, FC, memo, useCallback, useState} from "react"
 import {TodoFormPropsType} from "../types/Types"
 import {Button, TextField,} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {useStore} from "../hooks/useStore";
-import {SetAppErrorAC} from "../store/actions/app-actions";
 
 type FormStateType = {
     title: string,

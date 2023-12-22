@@ -1,22 +1,21 @@
-import { FilterProps, PropsType } from "../types/Types";
-import { FC, memo, useEffect, useState } from "react";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Task } from "./Task";
+import {FilterProps, PropsType} from "../types/Types";
+import {FC, memo, useEffect, useState} from "react";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
+import {Task} from "./Task";
 
 import Editable from "./Editable";
-import { Button } from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { TodoForm } from "./TodoForm";
-import { TaskControls } from "./TaskControls";
-import { useTodoList } from "../hooks/useTodoList";
-import { useStore } from "../hooks/useStore";
-import { View } from "../service-components/View/View";
+import {TodoForm} from "./TodoForm";
+import {TaskControls} from "./TaskControls";
+import {useTodoList} from "../hooks/useTodoList";
+import {useStore} from "../hooks/useStore";
+import {View} from "../service-components/View/View";
 import Text from "../service-components/Text/Text";
-import { fetchTasks } from "../store/async-thunks/tasks-thunks/fetchTasks";
-import { updateTodoList } from "../store/async-thunks/todos-thunks/updateTodolist";
-import { RequestRemoveTodolistAC } from "../store/actions/todos-actions";
-import { createTasks } from "../store/async-thunks/tasks-thunks/createTasks";
-import {SetAppErrorAC} from "../store/actions/app-actions";
+import {fetchTasks} from "../store/async-thunks/tasks-thunks/fetchTasks";
+import {updateTodoList} from "../store/async-thunks/todos-thunks/updateTodolist";
+import {RequestRemoveTodolistAC} from "../store/actions/todos-actions";
+import {createTasks} from "../store/async-thunks/tasks-thunks/createTasks";
 
 
 export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID }) => {
