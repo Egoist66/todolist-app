@@ -1,8 +1,9 @@
 import {ChangeEvent, FC, memo, useCallback, useEffect, useState} from "react"
 import {TodoFormPropsType} from "../types/Types"
-import {Button, Snackbar, TextField,} from "@material-ui/core";
+import {Button, TextField,} from "@material-ui/core";
 import {View} from "../service-components/View/View";
-import {Alert} from "@material-ui/lab";
+import {useStore} from "../hooks/useStore";
+import {SetAppErrorAC} from "../store/actions/app-actions";
 
 type FormStateType = {
     title: string,
@@ -11,12 +12,12 @@ type FormStateType = {
 }
 
 export const TodoForm: FC<TodoFormPropsType> = memo(({
- onTodoFormHandler,
- restrictedQuantity,
- placeholder,
- todoListId,
-formName
-}) => {
+                                                         onTodoFormHandler,
+                                                         restrictedQuantity,
+                                                         placeholder,
+                                                         todoListId,
+                                                         formName
+                                                     }) => {
 
     const [state, setState] = useState<FormStateType>({
         title: '',
@@ -24,6 +25,7 @@ formName
         success: null
     })
     const {error, title} = state
+    const {dispatch} = useStore()
 
     const onSetTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setState({
@@ -44,51 +46,40 @@ formName
             return
         }
 
+        onTodoFormHandler(title, todoListId ? todoListId : "")
 
+        setState({
+            ...state,
+            error: false,
+            title: ''
+        })
 
-        if (title.length >= 100) {
-            return;
-        }
-        else {
-            onTodoFormHandler(title, todoListId ? todoListId : "")
-
-            setState({
-                ...state,
-                error: false,
-                title: ''
-            })
-
-        }
 
     }, [title, error])
 
-
-    useEffect(() => {
-        let timer: number | NodeJS.Timer | undefined
-        if (title.length >= 100) {
-            timer = setTimeout(() => {
-                setState({
-                    ...state,
-                    title: ''
-                })
-            }, 2000)
-        }
-
-        return () => {
-            clearTimeout(timer)
-        }
-    }, [title])
-
-    const evalNotification = () => {
-
-        if (title.length >= 100) {
-            return 'Maximum symbols exceeded'
-        }
-
-        return formName
-    }
-
-
+    //
+    // useEffect(() => {
+    //     let timer: number | NodeJS.Timer | undefined
+    //     if (title.length >= 100) {
+    //         timer = setTimeout(() => {
+    //             setState({
+    //                 ...state,
+    //                 title: ''
+    //             })
+    //         }, 2000)
+    //     }
+    //
+    //     return () => {
+    //         clearTimeout(timer)
+    //     }
+    // }, [title])
+    //
+    //
+    // useEffect(() => {
+    //     if (title.length >= 100) {
+    //         dispatch(SetAppErrorAC('Maximum symbols exceeded! 100'))
+    //     }
+    // }, [title.length])
 
     return (
 
@@ -100,7 +91,7 @@ formName
                     e.key === 'Enter' && addTask()
                 }}
                 value={title}
-                disabled={title.length >= 100}
+                // disabled={title.length >= 100}
                 onChange={onSetTitle}
                 id="standard-basic"
                 label={placeholder}
@@ -110,11 +101,11 @@ formName
             <Button
                 size={"small"}
                 disabled={restrictedQuantity ? restrictedQuantity[0].data.length >= restrictedQuantity[0].quantity : false}
-                color={error || title.length >= 100 ? 'secondary' : 'primary'}
+                color={error || title.length > 100 ? 'secondary' : 'primary'}
                 variant={"contained"}
                 onClick={addTask}>
 
-                {evalNotification()}
+                {formName}
             </Button>
 
 

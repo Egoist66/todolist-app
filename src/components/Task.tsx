@@ -49,9 +49,12 @@ export const Task: FC<TaskTypeProps> = memo(({ data }) => {
                     title={title}
                     todoListID={todoListId}
                     taskID={id}
-                    onSaveEdits={(title, todoListID, id) =>
-                        dispatch(updateTasks(todoListID, id, title, status)
-                    )}
+                    onSaveEdits={(_title, todoListID, id) => {
+                        if(_title === title){
+                            return
+                        }
+                        dispatch(updateTasks(todoListID, id, _title, status))
+                    }}
                 />
 
             <IconButton onClick={() => dispatch(deleteTasks(todoListId, id))} aria-label="delete">

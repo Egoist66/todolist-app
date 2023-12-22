@@ -7,7 +7,7 @@ type EditableProps = {
     todoListID: string
     taskID: string
     editableType: 'p' | 'span' | 'h2' | 'h1'
-    onSaveEdits: (title: string, todoListID: string, id: string) => void,
+    onSaveEdits: (_title: string, todoListID: string, id: string) => void,
 
 }
 

@@ -2,30 +2,38 @@ import {todoListAPI} from "../../../api/todo-lists-api";
 import {SetTodolistAC} from "../../actions/todos-actions";
 import {CatchErrorAC, ErrorResetAC, SetLoadingtAC} from "../../actions/ui-actions";
 import {AppThunk} from "../../store";
+import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
 
 
 export const createTodoList = (title: string): AppThunk => {
     return async (dispatch) => {
         try {
-            dispatch(SetLoadingtAC(true))
-            dispatch(ErrorResetAC())
+            dispatch(SetAppStatusAC('loading'))
 
             const todo = await todoListAPI.createTodoList(title)
-            dispatch(SetTodolistAC(todo?.title, todo?.id))
+
+            if(todo.resultCode === 1){
+                dispatch(SetAppErrorAC(todo.messages[0]))
+                return
+
+            }
+            dispatch(SetTodolistAC(todo?.data.item.title, todo?.data.item.id))
+            dispatch(SetAppStatusAC('succeeded'))
+
 
 
 
         }
-        catch (e) {
+        catch (e: any) {
 
             console.error(e);
-            dispatch(CatchErrorAC())
+            dispatch(SetAppStatusAC('failed'))
+            dispatch(SetAppErrorAC(e.message))
+
 
 
         }
-        finally {
-            dispatch(SetLoadingtAC(false))
-        }
+
        
      }
 }

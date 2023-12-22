@@ -3,28 +3,30 @@ import {todoListAPI} from '../../../api/todo-lists-api';
 import {CatchErrorAC, ErrorResetAC, SetLoadingtAC} from "../../actions/ui-actions";
 import {Dispatch} from "redux";
 import {AppThunk} from "../../store";
+import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
 
 
-export const fetchTodos = (): AppThunk=> {
-    return async (dispatch: Dispatch<ActionTodosTypes>) => {
+export const fetchTodos = (): AppThunk => {
+    return async (dispatch) => {
         try {
-            dispatch(SetLoadingtAC(true))
-            dispatch(ErrorResetAC())
+            dispatch(SetAppStatusAC('loading'))
+
             const todos = await todoListAPI.getTodoLists()
             
             dispatch(FetchTodosAC(todos))
+            dispatch(SetAppStatusAC('succeeded'))
+
 
         }
-        catch(e){
+        catch(e: any){
             console.log(e);
-            dispatch(CatchErrorAC())
+            dispatch(SetAppStatusAC('failed'))
+            dispatch(SetAppErrorAC(e.message))
 
 
-        }
-        finally {
-            dispatch(SetLoadingtAC(false))
 
         }
+
     }
 }
 

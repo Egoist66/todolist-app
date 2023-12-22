@@ -10,6 +10,8 @@ import {ActionTasksTypes} from "./actions/tasks-actions";
 import {ActionTodosTypes} from "./actions/todos-actions";
 import {AppRootState} from "../hooks/useStore";
 import {PreloadedStore} from "../hooks/PreloadedStore";
+import {appReducer} from "./reducers-v1/app-reducer";
+import {AppStatusActions} from "./actions/app-actions";
 
 const {preloadStore, persist} = PreloadedStore()
 const sagaMiddleWare = createSagaMiddleware()
@@ -18,7 +20,8 @@ const sagaMiddleWare = createSagaMiddleware()
 export const rootReducer = combineReducers({
     todos: todolistReducer,
     tasks: tasksReducer,
-    ui: catchUIReducer
+    ui: catchUIReducer,
+    app: appReducer
 })
 
 
@@ -45,7 +48,7 @@ store.subscribe(() => {
 sagaMiddleWare.run(rootSaga)
 
 
-export type AppActions = ActionTasksTypes | ActionTodosTypes
+export type AppActions = ActionTasksTypes | ActionTodosTypes | AppStatusActions
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
     AppRootState,

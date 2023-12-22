@@ -61,12 +61,12 @@ export const todolistTasksAPI = {
     },
 
     async createTasks(todolistID: string, title: string) {
-        const { data: { data } } = await instance.post(
+        const { data } = await instance.post(
             `todo-lists/${todolistID}/tasks`,
             { title },
         )
         
-        return data.item
+        return data
 
 
     },

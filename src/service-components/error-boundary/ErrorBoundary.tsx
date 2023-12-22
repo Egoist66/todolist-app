@@ -4,7 +4,7 @@ import {ErrorMessage} from "./ErrorMessage";
 
 interface ErorBoundaryProps {
     onTryhandler?: () => void;
-    error: boolean;
+    error: boolean | null | string;
     children: ReactNode;
 }
 
@@ -14,7 +14,7 @@ interface ErrorBoundaryState {
 
 class ErrorBoundary extends PureComponent<ErorBoundaryProps, ErrorBoundaryState> {
     static defaultProps = {
-        error: false,
+        error: null
     };
 
     state: Readonly<ErrorBoundaryState> = {
@@ -30,7 +30,7 @@ class ErrorBoundary extends PureComponent<ErorBoundaryProps, ErrorBoundaryState>
     }
 
     render(): ReactNode {
-        if (this.props.error || this.state.appError) {
+        if (this.props.error === 'failed' || this.state.appError) {
             return (
                 <div>
                     <img

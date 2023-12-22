@@ -3,6 +3,7 @@ import {AppActions, rootReducer} from "../store/store";
 import {ThunkDispatch} from "redux-thunk";
 
 export type AppRootState = ReturnType<typeof rootReducer>
+
 export type AppDispatch = ThunkDispatch<AppRootState, unknown, AppActions>
 
 export const useStore = () => {

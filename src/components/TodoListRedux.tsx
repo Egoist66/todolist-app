@@ -16,6 +16,7 @@ import { fetchTasks } from "../store/async-thunks/tasks-thunks/fetchTasks";
 import { updateTodoList } from "../store/async-thunks/todos-thunks/updateTodolist";
 import { RequestRemoveTodolistAC } from "../store/actions/todos-actions";
 import { createTasks } from "../store/async-thunks/tasks-thunks/createTasks";
+import {SetAppErrorAC} from "../store/actions/app-actions";
 
 
 export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID }) => {
@@ -76,7 +77,13 @@ export const TodoListRedux: FC<PropsType> = memo(({ title, isDeleted, todoListID
                 taskID={''}
                 todoListID={todoListID}
                 editableType={"h2"}
-                onSaveEdits={(title, todoListID) => dispatch(updateTodoList(todoListID, title))}
+                onSaveEdits={(_title, todoListID) => {
+                    if(_title === title){
+                        return
+                    }
+                    dispatch(updateTodoList(todoListID, _title))
+                }}
+
             />
 
 

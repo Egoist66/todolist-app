@@ -1,21 +1,26 @@
-import {FC, memo, useState} from "react";
+import {FC, memo, SyntheticEvent, useState} from "react";
 import {Snackbar} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
+import {useStore} from "../../hooks/useStore";
+import {SetAppErrorAC} from "../../store/actions/app-actions";
 
-type SnackbarProps = {
-    error: boolean
-    entity: string
-}
-export const SnackBar: FC<SnackbarProps> = memo(({error, entity}) => {
-    const [open, setOpen] = useState<boolean>(false);
+
+export const SnackErrorBar: FC = memo(() => {
+
+    const {useAppSelector, dispatch} = useStore()
+    const error = useAppSelector(state => state.app.error)
+
+    const isOpen = error !== null
+
+    const handleClose = (e: SyntheticEvent, reason?: string) => {
+        dispatch(SetAppErrorAC(null))
+    }
 
     return (
-        <Snackbar onClose={() => setOpen(false)} autoHideDuration={2000} open={open}>
-            {error ? <Alert onClose={() => setOpen(false)} variant={'filled'} severity="error">
-                {`Can not create ${entity}! Check fields`}
-            </Alert> : <Alert onClose={() => setOpen(false)}  variant={'filled'} severity="success">
-                {`${entity} created!`}
-            </Alert>}
+        <Snackbar onClose={handleClose} autoHideDuration={4000} open={isOpen}>
+            <Alert onClose={handleClose} variant={'filled'} severity="error">
+                {error} - Error has occurred!
+            </Alert>
         </Snackbar>
     )
 })

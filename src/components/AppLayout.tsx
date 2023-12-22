@@ -2,19 +2,20 @@ import {FC, memo, useEffect, useMemo} from "react";
 import {useStore} from "../hooks/useStore";
 import {TodoListRedux} from "./TodoListRedux";
 import {Header} from "./Header";
-import {Container, Grid, LinearProgress} from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {TodoForm} from "./TodoForm";
 import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
 import {createTodoList} from "../store/async-thunks/todos-thunks/createTodoList";
 import ErrorBoundary from "../service-components/error-boundary/ErrorBoundary";
 import Preloader from "../service-components/preloader/preloader";
+import {SnackErrorBar} from "../service-components/SnackBar/SnackBar";
 
 export const AppLayout: FC = memo(() => {
 
     const {useAppSelector, dispatch} = useStore()
     const todos = useAppSelector(state => state.todos.todos)
-    const {isError, isLoading} = useAppSelector(state => state.ui)
+    const {status} = useAppSelector(state => state.app)
 
 
     useEffect(() => {
@@ -61,9 +62,9 @@ export const AppLayout: FC = memo(() => {
 
                     <ErrorBoundary
                         onTryhandler={() => dispatch(fetchTodos())}
-                        error={isError}>
+                        error={status}>
 
-                        <Preloader isLoading={isLoading} afterSpinner={() => (
+                        <Preloader isLoading={status} afterSpinner={() => (
                             TodoElems
                         )}/>
 
@@ -72,6 +73,9 @@ export const AppLayout: FC = memo(() => {
 
                 </Grid>
             </Container>
+
+            <SnackErrorBar />
+
         </>
     )
 })
