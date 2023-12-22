@@ -1,9 +1,9 @@
-import {FilterProps, TodoListProps} from "../types/Types";
-import {FC, memo, useState} from "react";
+import {FilterProps, TaskType, TodoListProps} from "../types/Types";
+import {FC, Fragment, memo, useState} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {Task} from "./Task";
 import Editable from "./Editable";
-import {Button, Portal} from "@material-ui/core";
+import {Button, Portal, Snackbar} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {TodoForm} from "./TodoForm";
 import {TaskControls} from "./TaskControls";
@@ -19,6 +19,8 @@ import {useDevMode} from "../hooks/useDevMode";
 import {AddTasktAC} from "../store/actions/tasks-actions";
 import {v1} from "uuid";
 import {SnackTodoBar} from "../service-components/SnackBar/SnackBar";
+import {Progress} from "../service-components/SnackBar/Progress";
+import {Alert} from "@material-ui/lab";
 
 
 type TodoListPropsType = {
@@ -32,6 +34,7 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
 
     const {useAppSelector, dispatch} = useStore()
     const tasks = useAppSelector(state => state.tasks)
+    const {status} = useAppSelector(state => state.app)
     const {onDeleteAllTasks} = useTodoList()
 
     const {initDevMode} = useDevMode({
@@ -56,19 +59,32 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
     };
 
 
-    const TodoElement = !initFilteredTasks().length ? (
+    const TaskElement = !initFilteredTasks().length ? (
         <Text type={'h2'}>No data</Text>
     ) : (
         initFilteredTasks().map((t) => (
-            <Task
-                key={t.id}
-                data={{
-                    title: t.title,
-                    id: t.id,
-                    status: t.status,
-                    todoListId: todo.id,
-                }}
-            />
+           <Fragment key={t.id}>
+
+               <Task
+                   data={{
+                       title: t.title,
+                       id: t.id,
+                       entityStatus: t.entityStatus!,
+                       status: t.status,
+                       todoListId: todo.id,
+                   }}
+               />
+
+               <Portal>
+                   <Snackbar  open={t.entityStatus === 'failed'}>
+                       <Alert  variant={'filled'} severity="error">
+                           Unable to update task {t.title} - Error has occurred!
+                       </Alert>
+                   </Snackbar>
+               </Portal>
+
+
+           </Fragment>
         ))
     );
 
@@ -115,11 +131,11 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
             <TodoForm
                 todoListId={todo.id}
                 isDeletedTodo={todo.isDeleted}
-                formName="Add  a task"
+                formName={'Create task'}
                 placeholder="Enter a task name"
                 onTodoFormHandler={(title, todoListId) => {
                     initDevMode({
-                        afterIsDevOff: () => dispatch(createTasks({title, todoListID: todoListId,})),
+                        afterIsDevOff: () => dispatch(createTasks({title, todoListID: todoListId})),
                         afterIsDevOn: () => dispatch(AddTasktAC({
                             title,
                             todoListId,
@@ -132,7 +148,7 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
 
 
             <ul ref={listRef}>
-                {TodoElement}
+                {TaskElement}
             </ul>
 
 
@@ -155,7 +171,11 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
                     message={'Todo successfully deleted!'}
                 />
 
+
+                <Progress reason={todo.entityStatus === 'loading'} />
             </Portal>
+
+
 
         </View>
 

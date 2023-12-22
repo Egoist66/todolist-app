@@ -1,4 +1,4 @@
-import {Checkbox, IconButton} from "@material-ui/core";
+import {Checkbox, IconButton, LinearProgress, Portal} from "@material-ui/core";
 import {TaskTypeProps} from "../types/Types";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Editable from "./Editable";
@@ -9,11 +9,12 @@ import {toggleTasks} from "../store/async-thunks/tasks-thunks/toggleTasks";
 import {updateTasks} from "../store/async-thunks/tasks-thunks/updateTasks";
 import {useDevMode} from "../hooks/useDevMode";
 import {EditTaskAC, RemoveTaskAC, ToggleTaskAC} from "../store/actions/tasks-actions";
+import {Progress} from "../service-components/SnackBar/Progress";
 
 
 export const Task: FC<TaskTypeProps> = memo(({data}) => {
 
-    const {id, status, title, todoListId} = data
+    const {id, status, title, todoListId, entityStatus} = data
     const {dispatch} = useStore()
     const {initDevMode} = useDevMode()
 
@@ -80,6 +81,10 @@ export const Task: FC<TaskTypeProps> = memo(({data}) => {
                 <DeleteIcon/>
             </IconButton>
 
+
+            <Portal>
+                <Progress reason={entityStatus === 'loading'} />
+            </Portal>
 
         </li>
     )

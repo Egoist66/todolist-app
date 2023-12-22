@@ -6,6 +6,7 @@
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
+    "@react-hooks-library/core": "^0.5.1",
     "@redux-devtools/extension": "^3.2.5",
     "@storybook/addon-actions": "^7.5.1",
     "@testing-library/jest-dom": "^5.16.5",

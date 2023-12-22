@@ -1,4 +1,4 @@
-import {Todos} from "../../types/Types";
+import {TodoListProps, Todos} from "../../types/Types";
 import {ActionTodosTypes} from "../actions/todos-actions";
 
 export const todoList1 = crypto.randomUUID();
@@ -7,7 +7,7 @@ export const todoList2 = crypto.randomUUID();
 const initialState: Todos =  {
     todos: []
 }
-export const todolistReducer = (state: Todos = initialState, action: ActionTodosTypes): Todos => {
+export const todolistReducer = (state = initialState, action: ActionTodosTypes): Todos => {
     switch (action.type) {
 
         case 'REMOVE-TODOLIST': {
@@ -18,22 +18,33 @@ export const todolistReducer = (state: Todos = initialState, action: ActionTodos
 
         }
 
-        case 'INIT-DELETE': {
+        case "SET-TODO-ENTITY-STATUS": {
             return {
                 ...state,
-                todos: state.todos.map(t => t.id === action.payload.id ? {...t, isDeleted: action.payload.isDeleted, info: action.payload.info}: t)
+                todos: state.todos.map(t => t.id === action.payload.id ? {...t,  entityStatus: action.payload.status}: t)
             }
         }
 
-      
+        case 'INIT-DELETE': {
+            return {
+                ...state,
+                todos: state.todos.map(t => t.id === action.payload.id ? {
+                    ...t,
+                    isDeleted: action.payload.isDeleted,
+                    info: action.payload.info}: t) as TodoListProps[]
+            }
+        }
+
+
         case 'FETCH-TODOS': {
             return {
                 ...state,
                 todos: action.payload.todos.map(t => ({
                     id: t.id,
                     title: t.title,
+                    entityStatus: 'succeeded',
                     isDeleted: false
-                
+
                 }))
             }
         }

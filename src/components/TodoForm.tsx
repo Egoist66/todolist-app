@@ -65,6 +65,8 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
             <TextField
                 error={error}
+                autoFocus
+                variant={'outlined'}
                 onKeyDown={(e) => {
                     e.key === 'Enter' && addTask()
                 }}

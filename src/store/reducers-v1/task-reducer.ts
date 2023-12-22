@@ -33,6 +33,13 @@ export const tasksReducer = (state: TasksElems = initialState, action: ActionTas
             }
 
         }
+
+        case "SET-TASK-ENTITY-STATUS": {
+            return  {
+                ...state,
+                [action.payload.todoListId]: state[action.payload.todoListId].map(t => t.id === action.payload.id ? {...t, entityStatus: action.payload.status}: t)
+            }
+        }
         case 'EDIT-TASK': {
             return {
                 ...state,

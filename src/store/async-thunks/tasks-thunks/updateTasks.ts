@@ -1,14 +1,16 @@
-import { AppRootState } from "../../../hooks/useStore";
-import { ThunkDispatch } from "redux-thunk";
-import { ActionTasksTypes, EditTaskAC } from "../../actions/tasks-actions";
-import { TaskStatuses, todolistTasksAPI } from "../../../api/todolist-tasks-api";
+import {AppRootState} from "../../../hooks/useStore";
+import {ThunkDispatch} from "redux-thunk";
+import {ActionTasksTypes, EditTaskAC, SetTasksEntityStatus} from "../../actions/tasks-actions";
+import {TaskStatuses, todolistTasksAPI} from "../../../api/todolist-tasks-api";
+import {SetAppStatusAC} from "../../actions/app-actions";
+import {AppThunk} from "../../store";
 
 
-
-
-export const updateTasks = (todoListID: string, id: string, title: string, status: TaskStatuses): any => {
-    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTasksTypes>) => {
+export const updateTasks = (todoListID: string, id: string, title: string, status: TaskStatuses): AppThunk => {
+    return async (dispatch) => {
         try {
+            dispatch(SetTasksEntityStatus(todoListID, id, 'loading'))
+
             const task = await todolistTasksAPI.updateTasks(
                 todoListID,
                 id,
@@ -16,18 +18,25 @@ export const updateTasks = (todoListID: string, id: string, title: string, statu
                 status
             )
 
-
             dispatch(EditTaskAC(
                 task.title,
-                status, 
-                task.id, 
+                status,
+                task.id,
                 task.todoListId
             ))
 
+            dispatch(SetTasksEntityStatus(todoListID, id, 'succeeded'))
 
-        }
-        catch (e) {
+
+        } catch (e) {
             console.log(e);
+
+            dispatch(SetTasksEntityStatus(todoListID, id, 'failed'))
+            const timer = setTimeout(() =>{
+                dispatch(SetTasksEntityStatus(todoListID, id, 'idle'))
+                clearTimeout(timer)
+            }, 2000)
+
 
         }
     }

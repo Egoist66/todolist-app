@@ -1,6 +1,7 @@
 import {ActionTasksTypes} from "../store/actions/tasks-actions";
 import {ActionTodosTypes} from "../store/actions/todos-actions";
 import {TaskStatuses} from "../api/todolist-tasks-api";
+import {Statuses} from "../store/reducers-v1/app-reducer";
 
 export type TasksProps = {
     status: TaskStatuses;
@@ -14,6 +15,7 @@ export type TaskTypeProps = {
     data: {
         id: string,
         title: string
+        entityStatus: Statuses
         status: TaskStatuses
         todoListId: string
     }
@@ -29,6 +31,7 @@ export type TodoListProps = {
     id: string,
     title: string,
     isDeleted: boolean
+    entityStatus?: Statuses
     info?: string
 
 
@@ -45,6 +48,7 @@ export type TaskType = {
     title: string;
     todoListId: string;
     status: TaskStatuses;
+    entityStatus?: Statuses
 }
   
 export type FilterProps = "All" | "Active" | "Completed"

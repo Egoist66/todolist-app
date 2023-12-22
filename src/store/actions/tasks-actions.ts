@@ -1,6 +1,7 @@
 import {ResponseTaskType, TaskStatuses} from "../../api/todolist-tasks-api";
 import {CatchUIActions} from "./ui-actions";
 import {FetchTodosActionType, RemoveTodoActionType, SetTodoListActionType} from "./todos-actions";
+import {Statuses} from "../reducers-v1/app-reducer";
 
 
 type Task = {title: string, id: string, status: TaskStatuses, todoListId: string}
@@ -67,6 +68,7 @@ export type ActionTasksTypes = AddTaskActionType
     | FetchTodosActionType
     | FetchTasksActionType
     | CatchUIActions
+    | ReturnType< typeof SetTasksEntityStatus>
 
 export const RemoveTaskAC = (id: string, todoListID: string): RemoveTaskActionType => {
     return {type: 'REMOVE-TASK',payload: {id, todoListID}}
@@ -88,5 +90,9 @@ export const RemoveAllTasksAC = (todoListID: string): RemoveAllTasksActionType =
 
 export const FetchTasksAC = (tasks: Array<ResponseTaskType>, todoListID: string): FetchTasksActionType => {
     return {type: 'FETCH-TASKS', payload: {tasks, todoListID}}
+}
+
+export const SetTasksEntityStatus = (todoListId: string, id: string, status: Statuses) => {
+    return {type: 'SET-TASK-ENTITY-STATUS', payload: {todoListId, id, status}} as const
 }
 

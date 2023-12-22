@@ -1,5 +1,6 @@
 import {TodoListAPIType} from "../../api/todo-lists-api"
 import {CatchUIActions} from "./ui-actions";
+import {Statuses} from "../reducers-v1/app-reducer";
 
 export type RemoveTodoActionType = {
     type: 'REMOVE-TODOLIST'
@@ -25,13 +26,6 @@ export type SetTodoListActionType = {
 }
 
 
-export type ChangeTodoListTitleActionType = {
-    type: 'CHANGE-TODOLIST-TITLE'
-    payload: {
-        id: string
-        title: string
-    }
-}
 
 export type FetchTodosActionType = {
     type: 'FETCH-TODOS',
@@ -40,27 +34,16 @@ export type FetchTodosActionType = {
     }
 }
 
-export type InitDeleteActionType = {
-    type: 'INIT-DELETE',
-    payload: {
-        isDeleted: boolean
-        id: string
-    }
-}
 
 
 export type ActionTodosTypes =
-    ReturnType<typeof RemoveTodolistAC>
+     ReturnType<typeof RemoveTodolistAC>
     | ReturnType<typeof SetTodolistAC>
-
     | ReturnType<typeof ChangeTodolistTitleAC>
-
     | ReturnType<typeof FetchTodosAC>
-
     | ReturnType<typeof RequestRemoveTodolistAC>
-
+    | ReturnType<typeof SetTodoEntityStatus>
     | ReturnType<typeof InitDeleteAC>
-
     | CatchUIActions
 
 
@@ -88,5 +71,10 @@ export const FetchTodosAC = (todos: TodoListAPIType[]) => {
 export const InitDeleteAC = (isDeleted: boolean, id: string, info?: string) => {
     return {type: 'INIT-DELETE', payload: {isDeleted, id, info}} as const
 }
+
+export const SetTodoEntityStatus = (id: string, status: Statuses) => {
+    return {type: 'SET-TODO-ENTITY-STATUS', payload: {id, status}} as const
+}
+
 
 
