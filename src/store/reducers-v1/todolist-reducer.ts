@@ -1,4 +1,4 @@
-import {TodoListProps, Todos} from "../../types/Types";
+import {Todos} from "../../types/Types";
 import {ActionTodosTypes} from "../actions/todos-actions";
 
 export const todoList1 = crypto.randomUUID();
@@ -21,7 +21,7 @@ export const todolistReducer = (state: Todos = initialState, action: ActionTodos
         case 'INIT-DELETE': {
             return {
                 ...state,
-                todos: state.todos.map(t => t.id === action.payload.id ? {...t, isDeleted: action.payload.isDeleted}: t)
+                todos: state.todos.map(t => t.id === action.payload.id ? {...t, isDeleted: action.payload.isDeleted, info: action.payload.info}: t)
             }
         }
 

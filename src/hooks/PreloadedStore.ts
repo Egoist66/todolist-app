@@ -3,7 +3,15 @@ import {Store} from "redux";
 export const PreloadedStore = () => {
 
     const persist = (key: string, store: Store) => {
-           localStorage.setItem(key, JSON.stringify(store.getState()))
+        if (!store.getState().appDev.dev){
+            localStorage.removeItem('root')
+            return
+        }
+        else {
+            localStorage.setItem(key, JSON.stringify(store.getState()))
+
+        }
+
 
     }
 

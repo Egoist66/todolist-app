@@ -1,6 +1,5 @@
-import {FC, memo, useEffect, useMemo} from "react";
+import {FC, memo} from "react";
 import {useStore} from "../hooks/useStore";
-import {TodoListRedux} from "./TodoListRedux";
 import {Header} from "./Header";
 import {Container, Grid} from "@material-ui/core";
 import {View} from "../service-components/View/View";
@@ -10,6 +9,11 @@ import {createTodoList} from "../store/async-thunks/todos-thunks/createTodoList"
 import ErrorBoundary from "../service-components/error-boundary/ErrorBoundary";
 import Preloader from "../service-components/preloader/preloader";
 import {SnackErrorBar} from "../service-components/SnackBar/SnackBar";
+import {useDevMode} from "../hooks/useDevMode";
+import {SetTodolistAC} from "../store/actions/todos-actions";
+import {v1} from "uuid";
+import {TodoListRedux} from "./TodoListRedux";
+
 
 export const AppLayout: FC = memo(() => {
 
@@ -17,24 +21,11 @@ export const AppLayout: FC = memo(() => {
     const todos = useAppSelector(state => state.todos.todos)
     const {status} = useAppSelector(state => state.app)
 
-
-    useEffect(() => {
-
-        dispatch(fetchTodos())
-
-    }, [])
+    const {initDevMode} = useDevMode({
+        afterIsDevOff: () => dispatch(fetchTodos())
+    })
 
 
-    const TodoElems = useMemo(() => (
-        todos.map((t, i: number) => (
-            <TodoListRedux
-                key={todos[i].id}
-                isDeleted={todos[i].isDeleted}
-                todoListID={todos[i].id}
-                title={todos[i].title}
-            />
-        ))
-    ), [todos])
     return (
         <>
 
@@ -51,21 +42,29 @@ export const AppLayout: FC = memo(() => {
                         }]}
                         formName={"Add new todo"}
                         onTodoFormHandler={(title: string) => {
-                            dispatch(createTodoList(title));
+                            initDevMode({
+                                afterIsDevOff: () => dispatch(createTodoList(title)),
+                                afterIsDevOn: () => dispatch(SetTodolistAC(title, v1()))
+                            })
                         }}
                     />
                 </View>
             </Container>
 
             <Container fixed>
-                <Grid className="App">
+                <Grid style={{justifyContent: status === 'failed' ? 'center': 'flex-start'}} className="App">
 
                     <ErrorBoundary
                         onTryhandler={() => dispatch(fetchTodos())}
                         error={status}>
 
                         <Preloader isLoading={status} afterSpinner={() => (
-                            TodoElems
+                            todos.map((todo, i: number) => (
+                                <TodoListRedux
+                                    key={todos[i].id}
+                                    todo={todo}
+                                />
+                            ))
                         )}/>
 
                     </ErrorBoundary>
@@ -74,7 +73,7 @@ export const AppLayout: FC = memo(() => {
                 </Grid>
             </Container>
 
-            <SnackErrorBar />
+            <SnackErrorBar/>
 
         </>
     )

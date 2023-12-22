@@ -12,6 +12,7 @@ export const createTodoList = (title: string): AppThunk => {
             const todo = await todoListAPI.createTodoList(title)
 
             if(todo.resultCode === 1){
+                dispatch(SetAppStatusAC('failed'))
                 dispatch(SetAppErrorAC(todo.messages[0]))
                 return
 

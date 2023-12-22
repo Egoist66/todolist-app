@@ -85,8 +85,8 @@ export const FetchTodosAC = (todos: TodoListAPIType[]) => {
     return {type: 'FETCH-TODOS', payload: {todos}} as const
 }
 
-export const InitDeleteAC = (isDeleted: boolean, id: string) => {
-    return {type: 'INIT-DELETE', payload: {isDeleted, id}} as const
+export const InitDeleteAC = (isDeleted: boolean, id: string, info?: string) => {
+    return {type: 'INIT-DELETE', payload: {isDeleted, id, info}} as const
 }
 
 

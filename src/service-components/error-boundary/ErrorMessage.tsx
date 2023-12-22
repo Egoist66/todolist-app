@@ -1,4 +1,5 @@
-import { FC, ReactNode } from "react";
+import {FC, ReactNode} from "react";
+import {Button} from "@material-ui/core";
 
 type ErrorMessageProps = {
   onTryHandler?: () => void;
@@ -12,11 +13,11 @@ export const ErrorMessage: FC<ErrorMessageProps> = ({errorText, onTryHandler}) =
         {errorText}
       </h2>
       <div style={{ textAlign: "center" }}>
-        <button style={{ marginTop: 10 }} className="button button__main">
+        <Button variant={'outlined'} style={{ marginTop: 10 }} className="button button__main">
           <div onClick={onTryHandler} className="inner">
             Try again
           </div>
-        </button>
+        </Button>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TodoListProps } from "../types/Types";
+import {TodoListProps} from "../types/Types";
 
 
 export type TodoListAPIType = TodoListProps & {

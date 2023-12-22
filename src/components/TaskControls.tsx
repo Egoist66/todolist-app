@@ -6,7 +6,7 @@ type TaskControlsProps = {
   onDeleteAllTasks: (todoListID: string) => void;
   FilterTask: (status: "All" | "Completed" | "Active" ) => void;
   todoListID: string;
-  tasks: TasksElems
+  tasks: TasksElems;
   filterStatus: "All" | "Completed" | "Active" ;
 };
 

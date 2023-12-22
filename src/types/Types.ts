@@ -29,6 +29,8 @@ export type TodoListProps = {
     id: string,
     title: string,
     isDeleted: boolean
+    info?: string
+
 
 }
 
@@ -63,6 +65,7 @@ export type TodoFormPropsType = {
     todoListId?: string,
     restrictedQuantity?: [{data: TodoListProps[], quantity: number}]
     formName:string
+    isDeletedTodo?: boolean
     placeholder: string
 
 }

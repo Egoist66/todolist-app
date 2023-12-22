@@ -1,4 +1,4 @@
-import {put, takeEvery, delay, call, all} from 'redux-saga/effects'
+import {all, call, delay, put, takeEvery} from 'redux-saga/effects'
 import {todoListAPI} from '../../api/todo-lists-api';
 import {InitDeleteAC, RemoveTodolistAC, RequestForRemoveTodoActionType} from '../actions/todos-actions';
 import {watchAction} from './logActionsSaga';
@@ -19,7 +19,11 @@ function* deleteTodoListSaga(action: RequestForRemoveTodoActionType) {
             RemoveTodolistAC(action.payload.id),
         )
 
-    } catch (e) {
+    } catch (e: any) {
+
+        yield put(
+            InitDeleteAC(false, action.payload.id, e.message)
+        )
         console.log(e);
 
     }

@@ -11,12 +11,13 @@ type FormStateType = {
 }
 
 export const TodoForm: FC<TodoFormPropsType> = memo(({
-                                                         onTodoFormHandler,
-                                                         restrictedQuantity,
-                                                         placeholder,
-                                                         todoListId,
-                                                         formName
-                                                     }) => {
+ onTodoFormHandler,
+ restrictedQuantity,
+ isDeletedTodo,
+ placeholder,
+ todoListId,
+ formName
+ }) => {
 
     const [state, setState] = useState<FormStateType>({
         title: '',
@@ -56,29 +57,7 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
     }, [title, error])
 
-    //
-    // useEffect(() => {
-    //     let timer: number | NodeJS.Timer | undefined
-    //     if (title.length >= 100) {
-    //         timer = setTimeout(() => {
-    //             setState({
-    //                 ...state,
-    //                 title: ''
-    //             })
-    //         }, 2000)
-    //     }
-    //
-    //     return () => {
-    //         clearTimeout(timer)
-    //     }
-    // }, [title])
-    //
-    //
-    // useEffect(() => {
-    //     if (title.length >= 100) {
-    //         dispatch(SetAppErrorAC('Maximum symbols exceeded! 100'))
-    //     }
-    // }, [title.length])
+    const disabledReason = restrictedQuantity ? restrictedQuantity[0].data.length >= restrictedQuantity[0].quantity  : false
 
     return (
 
@@ -99,7 +78,7 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
             <Button
                 size={"small"}
-                disabled={restrictedQuantity ? restrictedQuantity[0].data.length >= restrictedQuantity[0].quantity : false}
+                disabled={disabledReason || isDeletedTodo}
                 color={error || title.length > 100 ? 'secondary' : 'primary'}
                 variant={"contained"}
                 onClick={addTask}>
