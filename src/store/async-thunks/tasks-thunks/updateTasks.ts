@@ -1,8 +1,5 @@
-import {AppRootState} from "../../../hooks/useStore";
-import {ThunkDispatch} from "redux-thunk";
-import {ActionTasksTypes, EditTaskAC, SetTasksEntityStatus} from "../../actions/tasks-actions";
+import { EditTaskAC, SetTasksEntityStatus } from "../../actions/tasks-actions";
 import {TaskStatuses, todolistTasksAPI} from "../../../api/todolist-tasks-api";
-import {SetAppStatusAC} from "../../actions/app-actions";
 import {AppThunk} from "../../store";
 
 

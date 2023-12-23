@@ -25,7 +25,10 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
         success: null
     })
     const {error, title} = state
-    const {dispatch} = useStore()
+
+
+    const {useAppSelector} = useStore()
+    const status = useAppSelector(state => state.app)
 
     const onSetTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setState({
@@ -46,13 +49,38 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
             return
         }
 
-        onTodoFormHandler(title, todoListId ? todoListId : "")
+        onTodoFormHandler(title, todoListId ? todoListId : "", () => {
 
-        setState({
-            ...state,
-            error: false,
-            title: ''
+            
+            if(status.status === 'failed'){
+                
+                setState({
+                    ...state,
+                    error: true,
+                
+                })
+                return
+            }
+          
+               
+
+            setState({
+                ...state,
+                error: false,
+                title: ''
+            
+            })
+
+        
+            
         })
+
+       
+
+       
+      
+
+
 
 
     }, [title, error])
@@ -65,13 +93,11 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
             <TextField
                 error={error}
-                autoFocus
                 variant={'outlined'}
                 onKeyDown={(e) => {
                     e.key === 'Enter' && addTask()
                 }}
                 value={title}
-                // disabled={title.length >= 100}
                 onChange={onSetTitle}
                 id="standard-basic"
                 label={placeholder}

@@ -1,20 +1,36 @@
-import { ThunkDispatch } from "redux-thunk";
 import { todoListAPI } from "../../../api/todo-lists-api";
-import { AppRootState } from "../../../hooks/useStore";
-import { ActionTodosTypes, ChangeTodolistTitleAC } from "../../actions/todos-actions";
+import { ChangeTodolistTitleAC } from "../../actions/todos-actions";
+import { SetAppErrorAC, SetAppStatusAC } from "../../actions/app-actions";
+import { AppThunk } from "../../store";
+import { handleThunkActions } from "../../../utils/utils";
 
 
-export const updateTodoList = (id: string, title: string): any => {
-    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTodosTypes>) => {
+export const updateTodoList = (id: string, title: string): AppThunk => {
+    return async (dispatch) => {
         try {
-            const todo = await todoListAPI.updateTodoList(id, title)
+            const data = await todoListAPI.updateTodoList(id, title)
 
-            dispatch(ChangeTodolistTitleAC(title, id))
+            handleThunkActions({
+                type: 'app',
+                appErrorActionHandler: [() => SetAppErrorAC(data.messages[0]), () => SetAppStatusAC('failed')],
+                dispatch: dispatch,
+                resultCode: data.resultCode,
+                successActionHandler: [
+                    () => ChangeTodolistTitleAC(title, id), 
+                    () => SetAppStatusAC('succeeded')
+                ]
+            })
+            
 
         }
-        catch (e) {
-            console.log(e);
+        catch (e: any) {
 
+            handleThunkActions({
+                type: 'network',
+                dispatch: dispatch,
+                serverErrorActionHandler: [() => SetAppErrorAC(e.message), () => SetAppStatusAC('failed')]
+            })
+          
         }
     }
 }

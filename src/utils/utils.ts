@@ -1,3 +1,5 @@
+import { AppDispatch } from "../hooks/useStore"
+import { AppActions } from "../store/store"
 
 export const setGlobalProperty = (obj: any, value: any[], ...props: string[]) => {
     props.forEach((prop, i: number) => Object.defineProperties(obj, {
@@ -80,5 +82,41 @@ export const Immutable = () => {
     return {
         update,
         toggle
+    }
+}
+
+
+type handleProps = {
+    type: 'app' | 'network'
+    resultCode?: number
+    dispatch: AppDispatch
+    appErrorActionHandler?: Array<() => AppActions>,
+    serverErrorActionHandler?: Array<() => AppActions>
+    successActionHandler?: Array<() => AppActions>
+}
+export const handleThunkActions = ({dispatch, resultCode, appErrorActionHandler, successActionHandler, serverErrorActionHandler, type}: handleProps) => {
+    switch(type){
+        case "app":
+                if(resultCode === 1){
+                    appErrorActionHandler?.forEach(h => {
+                        dispatch(h())
+                        return
+                    })
+                    return
+                }
+                
+                successActionHandler?.forEach(h => {
+                    
+                    dispatch(h())
+                })
+                
+            break
+        case "network":
+            serverErrorActionHandler?.forEach(h => {
+                dispatch(h())
+            })
+            break
+
+
     }
 }

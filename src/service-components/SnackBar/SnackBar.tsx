@@ -1,4 +1,4 @@
-import {FC, memo} from "react";
+import {FC, memo, useEffect} from "react";
 import {Snackbar} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useStore} from "../../hooks/useStore";
@@ -14,11 +14,14 @@ export const SnackErrorBar: FC = memo(() => {
     const isOpen = error !== null
 
     const handleClose = () => {
+        
         dispatch(SetAppErrorAC(null))
+        
     }
 
+
     return (
-        <Snackbar onClose={handleClose} autoHideDuration={4000} open={isOpen}>
+        <Snackbar onClose={handleClose} autoHideDuration={4000}  open={isOpen}>
             <Alert onClose={handleClose} variant={'filled'} severity="error">
                 {error} - Error has occurred!
             </Alert>

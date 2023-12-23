@@ -65,7 +65,7 @@ export type PropsType = {
 };
 
 export type TodoFormPropsType = {
-    onTodoFormHandler: (title: string, todoListId: string) => void,
+    onTodoFormHandler: (title: string, todoListId: string, callback: () => void) => void,
     todoListId?: string,
     restrictedQuantity?: [{data: TodoListProps[], quantity: number}]
     formName:string

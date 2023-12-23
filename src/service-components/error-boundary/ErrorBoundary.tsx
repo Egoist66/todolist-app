@@ -44,7 +44,7 @@ class ErrorBoundary extends PureComponent<ErorBoundaryProps, ErrorBoundaryState>
 
                     {!this.state.appError ?  <ErrorMessage
                         onTryHandler={this.props.onTryhandler}
-                        errorText={<p>Something went wrong...<br/>Check you network or request format</p>}
+                        errorText={<p style={{color: '#F44336'}}>Something went wrong...<br/></p>}
                     /> : null}
                 </div>
             );

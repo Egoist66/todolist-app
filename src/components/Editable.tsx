@@ -30,7 +30,7 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
     }
 
     const onBlurOffEditMode = () => {
-        if(!state.title.length || state.title.length >= 100){
+        if(!state.title.length){
             return
         }
 
@@ -55,9 +55,7 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
             return 'Empty Values!'
         }
 
-        if(state.title.length >= 100){
-            return 'Maximum symbols 100!'
-        }
+    
     }
     return (
         state.editMode

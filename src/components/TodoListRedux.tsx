@@ -99,6 +99,8 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
                 editableType={"h2"}
                 onSaveEdits={(_title, todoListID) => {
                     if (_title === todo.title) {
+                        console.log(_title === todo.title);
+                        
                         return
                     }
                     initDevMode({
