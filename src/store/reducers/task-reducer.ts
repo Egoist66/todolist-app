@@ -12,7 +12,6 @@ export const tasksReducer = (state: TasksElems = initialState, action: ActionTas
 
             tasksCopy[action.payload.todoListID] = action.payload.tasks
 
-
             return tasksCopy
         }
 

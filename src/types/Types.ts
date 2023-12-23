@@ -1,7 +1,7 @@
 import {ActionTasksTypes} from "../store/actions/tasks-actions";
 import {ActionTodosTypes} from "../store/actions/todos-actions";
 import {TaskStatuses} from "../api/todolist-tasks-api";
-import {Statuses} from "../store/reducers-v1/app-reducer";
+import {Statuses} from "../store/reducers/app-reducer";
 
 export type TasksProps = {
     status: TaskStatuses;
@@ -65,9 +65,8 @@ export type PropsType = {
 };
 
 export type TodoFormPropsType = {
-    onTodoFormHandler: (title: string, todoListId: string, callback: () => void) => void,
+    onTodoFormHandler: (title: string, todoListId: string) => void,
     todoListId?: string,
-    restrictedQuantity?: [{data: TodoListProps[], quantity: number}]
     formName:string
     isDeletedTodo?: boolean
     placeholder: string

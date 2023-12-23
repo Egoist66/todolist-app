@@ -1,4 +1,4 @@
-import {FilterProps, TaskType, TodoListProps} from "../types/Types";
+import {FilterProps, TodoListProps} from "../types/Types";
 import {FC, Fragment, memo, useState} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {Task} from "./Task";
@@ -10,7 +10,6 @@ import {TaskControls} from "./TaskControls";
 import {useTodoList} from "../hooks/useTodoList";
 import {useStore} from "../hooks/useStore";
 import {View} from "../service-components/View/View";
-import Text from "../service-components/Text/Text";
 import {fetchTasks} from "../store/async-thunks/tasks-thunks/fetchTasks";
 import {updateTodoList} from "../store/async-thunks/todos-thunks/updateTodolist";
 import {ChangeTodolistTitleAC, RemoveTodolistAC, RequestRemoveTodolistAC} from "../store/actions/todos-actions";
@@ -21,6 +20,7 @@ import {v1} from "uuid";
 import {SnackTodoBar} from "../service-components/SnackBar/SnackBar";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {Alert} from "@material-ui/lab";
+import Preloader from "../service-components/preloader/preloader";
 
 
 type TodoListPropsType = {
@@ -34,9 +34,8 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
 
     const {useAppSelector, dispatch} = useStore()
     const tasks = useAppSelector(state => state.tasks)
-    const {status} = useAppSelector(state => state.app)
-    const {onDeleteAllTasks} = useTodoList()
 
+    const {onDeleteAllTasks} = useTodoList()
     const {initDevMode} = useDevMode({
         afterIsDevOff: () => dispatch(fetchTasks(todo.id))
 
@@ -59,34 +58,33 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
     };
 
 
-    const TaskElement = !initFilteredTasks().length ? (
-        <Text type={'h2'}>No data</Text>
-    ) : (
+    const TaskElement = <Preloader width={100} height={100} isLoading={!initFilteredTasks().length} afterSpinner={() => (
         initFilteredTasks().map((t) => (
-           <Fragment key={t.id}>
+            <Fragment key={t.id}>
 
-               <Task
-                   data={{
-                       title: t.title,
-                       id: t.id,
-                       entityStatus: t.entityStatus!,
-                       status: t.status,
-                       todoListId: todo.id,
-                   }}
-               />
+                <Task
+                    data={{
+                        title: t.title,
+                        id: t.id,
+                        entityStatus: t.entityStatus!,
+                        status: t.status,
+                        todoListId: todo.id,
+                    }}
+                />
 
-               <Portal>
-                   <Snackbar  open={t.entityStatus === 'failed'}>
-                       <Alert  variant={'filled'} severity="error">
-                           Unable to update task {t.title} - Error has occurred!
-                       </Alert>
-                   </Snackbar>
-               </Portal>
+                <Portal>
+                    <Snackbar open={t.entityStatus === 'failed'}>
+                        <Alert variant={'filled'} severity="error">
+                            Unable to update task {t.title} - Error has occurred!
+                        </Alert>
+                    </Snackbar>
+                </Portal>
 
 
-           </Fragment>
+            </Fragment>
         ))
-    );
+    )}
+    />
 
 
     return (
@@ -100,7 +98,7 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
                 onSaveEdits={(_title, todoListID) => {
                     if (_title === todo.title) {
                         console.log(_title === todo.title);
-                        
+
                         return
                     }
                     initDevMode({
@@ -164,22 +162,22 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
             />
 
             <Portal>
-                 <SnackTodoBar
+                <SnackTodoBar
                     isDeleted={todo.isDeleted}
                     todoId={todo.id}
                     todoTitle={todo.title}
                     errorMessage={todo.info ? todo.info : ''}
-                    variant={todo.isDeleted ? 'success': 'error'}
+                    variant={todo.isDeleted ? 'success' : 'error'}
                     message={'Todo successfully deleted!'}
                 />
 
 
-                <Progress reason={todo.entityStatus === 'loading'} />
+                <Progress reason={todo.entityStatus === 'loading'}/>
             </Portal>
 
 
-
         </View>
+
 
     );
 })

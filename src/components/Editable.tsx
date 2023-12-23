@@ -58,8 +58,7 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
     
     }
     return (
-        state.editMode
-            ?
+        state.editMode ?
                 <TextField
                     autoFocus
                     onBlur={onBlurOffEditMode}

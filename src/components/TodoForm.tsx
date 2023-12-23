@@ -1,44 +1,42 @@
-import {ChangeEvent, FC, memo, useCallback, useState} from "react"
+import {ChangeEvent, FC, memo, useEffect, useState} from "react"
 import {TodoFormPropsType} from "../types/Types"
-import {Button, TextField,} from "@material-ui/core";
+import {Button, Portal, Snackbar, TextField,} from "@material-ui/core";
 import {View} from "../service-components/View/View";
-import {useStore} from "../hooks/useStore";
+import {LS} from "../utils/utils";
+import {Alert} from "@material-ui/lab";
+import {useOnline} from "@react-hooks-library/core";
 
 type FormStateType = {
     title: string,
     error: boolean
-    success: boolean | null
 }
 
 export const TodoForm: FC<TodoFormPropsType> = memo(({
  onTodoFormHandler,
- restrictedQuantity,
  isDeletedTodo,
  placeholder,
  todoListId,
  formName
  }) => {
+    const {get} = LS()
 
     const [state, setState] = useState<FormStateType>({
         title: '',
         error: false,
-        success: null
     })
     const {error, title} = state
+    const isAppOnline = useOnline()
 
 
-    const {useAppSelector} = useStore()
-    const status = useAppSelector(state => state.app)
-
-    const onSetTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const onSetTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setState({
             ...state,
             error: false,
             title: e.currentTarget.value
         })
-    }, [title, error])
+    }
 
-    const addTask = useCallback(() => {
+    const addTask = () => {
 
         if (title.trim() === '') {
             setState({
@@ -49,43 +47,31 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
             return
         }
 
-        onTodoFormHandler(title, todoListId ? todoListId : "", () => {
+        if(!isAppOnline){
+            return
+        }
+        onTodoFormHandler(title, todoListId!)
 
-            
-            if(status.status === 'failed'){
-                
-                setState({
-                    ...state,
-                    error: true,
-                
-                })
-                return
-            }
-          
-               
 
+    }
+
+
+    useEffect(() => {
+        const status = get('app-status')
+        if (status === 'succeeded') {
             setState({
                 ...state,
                 error: false,
                 title: ''
-            
             })
+            return
+        }
 
-        
-            
-        })
+        return () => {
 
-       
+        }
+    }, [get('app-status')])
 
-       
-      
-
-
-
-
-    }, [title, error])
-
-    const disabledReason = restrictedQuantity ? restrictedQuantity[0].data.length >= restrictedQuantity[0].quantity  : false
 
     return (
 
@@ -106,7 +92,7 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
             <Button
                 size={"small"}
-                disabled={disabledReason || isDeletedTodo}
+                disabled={isDeletedTodo}
                 color={error || title.length > 100 ? 'secondary' : 'primary'}
                 variant={"contained"}
                 onClick={addTask}>
@@ -114,6 +100,13 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
                 {formName}
             </Button>
 
+            {title.length >= 80 ? <Portal>
+                <Snackbar open={title.length >= 80 && title.length <= 100}>
+                    <Alert variant={'filled'} severity={'warning'}>
+                        There is an upcoming symbols limit! current - {title.length}, max - 100
+                    </Alert>
+                </Snackbar>
+            </Portal> : null}
 
         </View>
     )

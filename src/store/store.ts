@@ -1,18 +1,18 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {todolistReducer} from "./reducers-v1/todolist-reducer";
-import {tasksReducer} from "./reducers-v1/task-reducer";
+import {todolistReducer} from "./reducers/todolist-reducer";
+import {tasksReducer} from "./reducers/task-reducer";
 import thunk, {ThunkAction} from 'redux-thunk'
 import {composeWithDevTools} from "@redux-devtools/extension";
 import createSagaMiddleware from 'redux-saga'
 import {rootSaga} from "./sagas/deleteTodoSaga";
-import {catchUIReducer} from "./reducers-v1/catch-ui-reducer";
+import {catchUIReducer} from "./reducers/catch-ui-reducer";
 import {ActionTasksTypes} from "./actions/tasks-actions";
 import {ActionTodosTypes} from "./actions/todos-actions";
 import {AppRootState} from "../hooks/useStore";
 import {PreloadedStore} from "../hooks/PreloadedStore";
-import {appReducer} from "./reducers-v1/app-reducer";
+import {appReducer} from "./reducers/app-reducer";
 import {AppStatusActions} from "./actions/app-actions";
-import {AppDevModeAction, AppDevModeReducer, setDevMode} from "./reducers-v1/app-devmode-reducer";
+import {AppDevModeAction, AppDevModeReducer, setDevMode} from "./reducers/app-devmode-reducer";
 
 const {preloadStore, persist} = PreloadedStore()
 const sagaMiddleWare = createSagaMiddleware()
@@ -38,15 +38,12 @@ export const store = createStore(
         )
     )
 )
-
-
-
-
-
-store.dispatch(setDevMode(false))
 store.subscribe(() => {
     persist('root', store)
-})
+});
+
+store.dispatch(setDevMode(false))
+
 sagaMiddleWare.run(rootSaga)
 
 

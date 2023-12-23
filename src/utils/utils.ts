@@ -1,5 +1,5 @@
-import { AppDispatch } from "../hooks/useStore"
-import { AppActions } from "../store/store"
+import {AppDispatch} from "../hooks/useStore"
+import {AppActions} from "../store/store"
 
 export const setGlobalProperty = (obj: any, value: any[], ...props: string[]) => {
     props.forEach((prop, i: number) => Object.defineProperties(obj, {
@@ -64,17 +64,20 @@ export const Immutable = () => {
     }
 
     const update = (find: boolean, {prevState, updateConfig}: UpdateProps) => {
-        if(find){
+        if (find) {
             return {
                 ...prevState,
                 [updateConfig.name]: prevState[updateConfig.name]
-                    .map((item: any) => item.id === updateConfig.payload ? {...item, [updateConfig.foundProp.name]:updateConfig.foundProp.value }: item)
+                    .map((item: any) => item.id === updateConfig.payload ? {
+                        ...item,
+                        [updateConfig.foundProp.name]: updateConfig.foundProp.value
+                    } : item)
             }
         }
 
         return {
             ...prevState,
-            [updateConfig.name]: updateConfig.callback ? updateConfig.callback(): null
+            [updateConfig.name]: updateConfig.callback ? updateConfig.callback() : null
         }
     }
 
@@ -92,24 +95,42 @@ type handleProps = {
     dispatch: AppDispatch
     appErrorActionHandler?: Array<() => AppActions>,
     serverErrorActionHandler?: Array<() => AppActions>
-    successActionHandler?: Array<() => AppActions>
+    successActionHandler?: Array<() => AppActions>,
+    sideEffect?: [() => void]
 }
-export const handleThunkActions = ({dispatch, resultCode, appErrorActionHandler, successActionHandler, serverErrorActionHandler, type}: handleProps) => {
-    switch(type){
+export const handleThunkActions = ({
+dispatch,
+resultCode,
+sideEffect,
+appErrorActionHandler,
+successActionHandler,
+serverErrorActionHandler,
+type
+}: handleProps) => {
+    switch (type) {
         case "app":
-                if(resultCode === 1){
-                    appErrorActionHandler?.forEach(h => {
-                        dispatch(h())
-                        return
-                    })
-                    return
-                }
-                
-                successActionHandler?.forEach(h => {
-                    
+            if (resultCode === 1) {
+                appErrorActionHandler?.forEach((h, index) => {
                     dispatch(h())
+
+                    if (sideEffect) {
+                        sideEffect[0]()
+                    }
+
+                    return
                 })
-                
+                return
+            }
+
+            successActionHandler?.forEach((h, index) => {
+
+                dispatch(h())
+
+                if (sideEffect) {
+                    sideEffect[0]()
+                }
+            })
+
             break
         case "network":
             serverErrorActionHandler?.forEach(h => {
@@ -119,4 +140,59 @@ export const handleThunkActions = ({dispatch, resultCode, appErrorActionHandler,
 
 
     }
+}
+
+
+export const LS = () => {
+    const ls = localStorage;
+
+    const save = (key: string, value: any, flush?: boolean) => {
+        try {
+            if (flush) {
+                ls.removeItem(key)
+                ls.setItem(key, JSON.stringify(value));
+                return
+            }
+            ls.setItem(key, JSON.stringify(value));
+        } catch (e) {
+            console.log(e)
+
+        }
+    };
+
+    const remove = (key: string) => {
+        ls.removeItem(key);
+    };
+
+    const get = (key: string) => {
+        const item = ls.getItem(key);
+        if (item) {
+            return JSON.parse(item);
+        }
+    };
+
+    const exist = (key: string) => {
+        if (key in ls) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    return {
+        save,
+        remove,
+        get,
+        ls,
+        exist
+    };
+};
+
+export const delay = (ms: number) => {
+    return new Promise((res, rej) => {
+        const timer = setTimeout(() => {
+            res(1)
+            clearTimeout(timer)
+        }, ms)
+    })
 }

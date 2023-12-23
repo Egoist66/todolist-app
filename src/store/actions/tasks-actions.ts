@@ -1,7 +1,7 @@
 import {ResponseTaskType, TaskStatuses} from "../../api/todolist-tasks-api";
 import {CatchUIActions} from "./ui-actions";
 import {FetchTodosActionType, RemoveTodoActionType, SetTodoListActionType} from "./todos-actions";
-import {Statuses} from "../reducers-v1/app-reducer";
+import {Statuses} from "../reducers/app-reducer";
 
 
 type Task = {title: string, id: string, status: TaskStatuses, todoListId: string}

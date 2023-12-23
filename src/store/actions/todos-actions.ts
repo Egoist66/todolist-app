@@ -1,6 +1,6 @@
 import {TodoListAPIType} from "../../api/todo-lists-api"
 import {CatchUIActions} from "./ui-actions";
-import {Statuses} from "../reducers-v1/app-reducer";
+import {Statuses} from "../reducers/app-reducer";
 
 export type RemoveTodoActionType = {
     type: 'REMOVE-TODOLIST'

@@ -2,10 +2,11 @@ import {todoListAPI} from "../../../api/todo-lists-api";
 import {SetTodolistAC} from "../../actions/todos-actions";
 import {AppThunk} from "../../store";
 import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
-import { handleThunkActions } from "../../../utils/utils";
+import {delay, handleThunkActions, LS} from "../../../utils/utils";
 
 
 export const createTodoList = (title: string): AppThunk => {
+    const {save} = LS()
     return async (dispatch) => {
         try {
             handleThunkActions({
@@ -18,7 +19,16 @@ export const createTodoList = (title: string): AppThunk => {
 
             handleThunkActions({
                 type: 'app',
-                appErrorActionHandler: [() => SetAppErrorAC(todo.messages[0]), () => SetAppStatusAC('failed')],
+                appErrorActionHandler: [
+                    () => SetAppErrorAC(todo.messages[0]),
+                    () => SetAppStatusAC('failed'),
+                ],
+                sideEffect: [() => {
+                    save('app-status', todo.messages[0] ? 'failed': 'succeeded', true)
+                    delay(500).then(() => {
+                        save('app-status', todo.messages[0] ? 'failed': 'idle', true)
+                    })
+                }],
                 dispatch,
                 resultCode: todo.resultCode,
                 successActionHandler: [() => SetTodolistAC(todo?.data.item.title, todo?.data.item.id), () => SetAppStatusAC('succeeded')]
