@@ -56,19 +56,19 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
     }
 
 
-    // useEffect(() => {
-    //     const status = get('app-status')
-    //     if (status === 'succeeded') {
-    //         setState({
-    //             ...state,
-    //             error: false,
-    //             title: ''
-    //         })
-    //         return
-    //     }
+    useEffect(() => {
+        const status = get('app-status')
+        if (status === 'succeeded') {
+            setState({
+                ...state,
+                error: false,
+                title: ''
+            })
+            return
+        }
 
         
-    // }, [get('app-status')])
+    }, [get('app-status')])
 
 
     return (
