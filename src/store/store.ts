@@ -27,7 +27,7 @@ export const rootReducer = combineReducers({
 })
 
 
-const preloadedState = preloadStore('root')
+const preloadedState: () => AppRootState = preloadStore('root')
 export const store = createStore(
     rootReducer,
     preloadedState(),

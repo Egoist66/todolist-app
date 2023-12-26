@@ -1,7 +1,7 @@
 import {FC, memo, useState} from "react";
 import {useStore} from "../hooks/useStore";
 import {Header} from "./Header";
-import {Container, Grid} from "@material-ui/core";
+import {Container, Grid, Portal} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {TodoForm} from "./TodoForm";
 import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
@@ -15,11 +15,11 @@ import {Progress} from "../service-components/SnackBar/Progress";
 import {OfflineBoundary} from "../service-components/SnackBar/OfflineBoundary";
 
 
-export const AppLayout: FC = memo(() => {
+export const AppLayout: FC = () => {
 
     const {useAppSelector, dispatch} = useStore()
     const todos = useAppSelector(state => state.todos.todos)
-    const {status} = useAppSelector(state => state.app)
+    const {status, error} = useAppSelector(state => state.app)
 
 
     const {initDevMode} = useDevMode({
@@ -63,14 +63,14 @@ export const AppLayout: FC = memo(() => {
                 </Grid>
             </Container>
 
-            <SnackErrorBar/>
+            {<SnackErrorBar error={error} status={status}/>}
             <Progress reason={status === "loading"}/>
             <OfflineBoundary/>
 
 
         </>
     )
-})
+}
 
 
 function ObjectConstructor() {

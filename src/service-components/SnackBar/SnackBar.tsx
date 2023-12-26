@@ -1,33 +1,40 @@
-import {FC, memo, useEffect} from "react";
+import {FC, memo, useEffect, useMemo} from "react";
 import {Snackbar} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {useStore} from "../../hooks/useStore";
-import {SetAppErrorAC} from "../../store/actions/app-actions";
+import {SetAppErrorAC, SetAppStatusAC} from "../../store/actions/app-actions";
 import {InitDeleteAC} from "../../store/actions/todos-actions";
 
 
-export const SnackErrorBar: FC = memo(() => {
+export const SnackErrorBar: FC<{status: string, error: string | null}> = ({status, error}) => {
 
-    const {useAppSelector, dispatch} = useStore()
-    const error = useAppSelector(state => state.app.error)
+    
+    const {dispatch} = useStore()
 
-    const isOpen = error !== null
+    const isOpen = useMemo(() => {
+        return (status === 'failed' || error !==  null)
+    }, [status, error])
 
     const handleClose = () => {
         
         dispatch(SetAppErrorAC(null))
+        dispatch(SetAppStatusAC('idle'))
         
     }
 
 
     return (
-        <Snackbar onClose={handleClose} autoHideDuration={4000}  open={isOpen}>
+        <>
+        
+            {isOpen ? <Snackbar onClose={handleClose} autoHideDuration={4000}   open={isOpen}>
             <Alert onClose={handleClose} variant={'filled'} severity="error">
                 {error} - Error has occurred!
             </Alert>
-        </Snackbar>
+        </Snackbar>: null}
+        
+        </>
     )
-})
+}
 
 
 
@@ -40,7 +47,7 @@ type SnackBarTodoProps = {
     errorMessage: string
 }
 export const SnackTodoBar: FC<SnackBarTodoProps> = memo(({isDeleted, todoTitle, todoId, errorMessage, variant, message}) => {
-
+        
     const {dispatch} = useStore()
     if (isDeleted){
         return  (

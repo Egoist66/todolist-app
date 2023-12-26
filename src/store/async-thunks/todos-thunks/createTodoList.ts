@@ -17,6 +17,8 @@ export const createTodoList = (title: string): AppThunk => {
 
             const todo = await todoListAPI.createTodoList(title)
 
+            
+                
             handleThunkActions({
                 type: 'app',
                 appErrorActionHandler: [
@@ -28,6 +30,7 @@ export const createTodoList = (title: string): AppThunk => {
                     delay(500).then(() => {
                         save('app-status', todo.messages[0] ? 'failed': 'idle', true)
                     })
+                    
                 }],
                 dispatch,
                 resultCode: todo.resultCode,
