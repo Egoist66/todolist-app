@@ -57,6 +57,7 @@ export const Task: FC<TaskTypeProps> = memo(({data}) => {
             <Editable
                 editableType={'span'}
                 title={title}
+                status={status}
                 todoListID={todoListId}
                 taskID={id}
                 onSaveEdits={(_title, todoListID, id) => {

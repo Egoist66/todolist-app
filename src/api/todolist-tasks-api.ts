@@ -30,7 +30,6 @@ export enum TaskStatuses {
 }
 
 
-
 export enum TaskPriorities {
     Low = 0,
     Middle = 1,
@@ -53,18 +52,18 @@ export type UpdateModelType = {
 export const todolistTasksAPI = {
 
     async getTasks(todolistID: string) {
-        const { data } = await instance.get<ResponseRootTask<ResponseTaskType[]>>(`todo-lists/${todolistID}/tasks`)
+        const {data} = await instance.get<ResponseRootTask<ResponseTaskType[]>>(`todo-lists/${todolistID}/tasks`)
 
         return data
-       
+
     },
 
     async createTasks(todolistID: string, title: string) {
-        const { data } = await instance.post(
+        const {data} = await instance.post(
             `todo-lists/${todolistID}/tasks`,
-            { title },
+            {title},
         )
-        
+
         return data
 
 
@@ -72,40 +71,32 @@ export const todolistTasksAPI = {
 
 
     async removeTasks(todolistID: string, id: string) {
-        const { data } = await instance.delete(
+        const {data} = await instance.delete(
             `todo-lists/${todolistID}/tasks/${id}`,
         )
 
         return data
 
     },
-    async removeAllTasks(dispatch: Dispatch<RemoveAllTasksActionType>, todolistID: string) {
-        const { data } = await instance.delete(
-            `todo-lists/${todolistID}/tasks/`,
-        )
 
-
-        dispatch(RemoveAllTasksAC(todolistID))
-
-    },
 
     async updateTasks(todolistID: string, id: string, title: string, status: TaskStatuses) {
-        const { data: { data } } = await instance.put(
+        const {data: {data}} = await instance.put(
             `todo-lists/${todolistID}/tasks/${id}`,
-            { title, status},
+            {title, status},
         )
 
-        
+
         return data.item
 
 
     },
     async updateCompletedTasks(todolistID: string, id: string, model: UpdateModelType) {
-        const { data } = await instance.put(
+        const {data} = await instance.put(
             `todo-lists/${todolistID}/tasks/${id}`,
             model,
         )
-        
+
 
         return data.data.item
 

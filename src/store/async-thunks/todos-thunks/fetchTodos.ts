@@ -2,25 +2,41 @@ import {FetchTodosAC} from "../../actions/todos-actions";
 import {todoListAPI} from '../../../api/todo-lists-api';
 import {AppThunk} from "../../store";
 import {SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
+import {handleThunkActions} from "../../../utils/utils";
 
 
 export const fetchTodos = (): AppThunk => {
     return async (dispatch) => {
         try {
-            dispatch(SetAppStatusAC('loading'))
+
+            handleThunkActions({
+                'type': 'app',
+                dispatch,
+                successActionHandler: [() => SetAppStatusAC('loading')]
+            })
+
 
             const todos = await todoListAPI.getTodoLists()
-            
-            dispatch(FetchTodosAC(todos))
-            dispatch(SetAppStatusAC('succeeded'))
+
+            handleThunkActions({
+                type: 'app',
+                dispatch,
+                successActionHandler: [
+                    () => FetchTodosAC(todos),
+                    () => SetAppStatusAC('succeeded')
+                ]
+
+            })
 
 
-        }
-        catch(e: any){
+        } catch (e: any) {
             console.log(e);
-            dispatch(SetAppStatusAC('failed'))
-            dispatch(SetAppErrorAC(e.message))
 
+            handleThunkActions({
+                'type': 'network',
+                dispatch,
+                serverErrorActionHandler: [() => SetAppStatusAC('failed'), () => SetAppErrorAC(e.message)]
+            })
 
 
         }

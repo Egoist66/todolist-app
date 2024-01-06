@@ -89,7 +89,7 @@ export const Immutable = () => {
 }
 
 
-type handleProps = {
+export type handleProps = {
     type: 'app' | 'network'
     resultCode?: number
     dispatch: AppDispatch

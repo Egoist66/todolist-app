@@ -3,10 +3,11 @@ import {ThunkDispatch} from "redux-thunk";
 import {ActionTasksTypes, FetchTasksAC} from "../../actions/tasks-actions";
 import {todolistTasksAPI} from "../../../api/todolist-tasks-api";
 import {CatchErrorAC} from "../../actions/ui-actions";
+import {AppThunk} from "../../store";
 
 
-export const fetchTasks = (todoListID:  string): any => {
-    return async (dispatch: ThunkDispatch<AppRootState, undefined, ActionTasksTypes>) => {
+export const fetchTasks = (todoListID:  string): AppThunk => {
+    return async (dispatch) => {
         try {
             const tasks = await todolistTasksAPI.getTasks(todoListID)
             

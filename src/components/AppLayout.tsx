@@ -1,7 +1,7 @@
-import {FC, memo, useState} from "react";
+import {FC} from "react";
 import {useStore} from "../hooks/useStore";
 import {Header} from "./Header";
-import {Container, Grid, Portal} from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {TodoForm} from "./TodoForm";
 import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
@@ -10,15 +10,14 @@ import {SnackErrorBar} from "../service-components/SnackBar/SnackBar";
 import {useDevMode} from "../hooks/useDevMode";
 import {SetTodolistAC} from "../store/actions/todos-actions";
 import {v1} from "uuid";
-import {TodoListRedux} from "./TodoListRedux";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {OfflineBoundary} from "../service-components/SnackBar/OfflineBoundary";
+import {AppRoutes} from "./AppRoutes";
 
 
 export const AppLayout: FC = () => {
 
     const {useAppSelector, dispatch} = useStore()
-    const todos = useAppSelector(state => state.todos.todos)
     const {status, error} = useAppSelector(state => state.app)
 
 
@@ -31,6 +30,8 @@ export const AppLayout: FC = () => {
         <>
 
             <Header/>
+
+            {/*<Login />*/}
 
             <Container fixed>
                 <View _margin="30px 0px 0px 0px" id="form-view">
@@ -48,17 +49,9 @@ export const AppLayout: FC = () => {
             </Container>
 
             <Container fixed>
-                <Grid  className="App">
+                <Grid className="App">
 
-                    {todos.map((todo, i: number) => (
-
-
-                        <TodoListRedux
-                            key={todos[i].id}
-                            todo={todo}
-                        />
-                    ))}
-
+                    <AppRoutes/>
 
                 </Grid>
             </Container>
@@ -73,48 +66,3 @@ export const AppLayout: FC = () => {
 }
 
 
-function ObjectConstructor() {
-    const [inputs, setInputs] = useState([{key: '', value: ''}]);
-    const [objectData, setObjectData] = useState({});
-
-    const addInput = () => {
-        setInputs([...inputs, {key: '', value: ''}]);
-    };
-
-    const handleChange = (index: number, key: string, value: string) => {
-        const newInputs = [...inputs];
-        newInputs[index] = {key, value};
-        setInputs(newInputs)
-    };
-
-    const handleGenerateJson = () => {
-        const data: any = {};
-        inputs.forEach((input) => {
-            data[input.key] = input.value;
-        });
-        setObjectData(data);
-    };
-
-    return (
-        <div>
-            <button onClick={addInput}>Добавить инпут</button>
-            <button onClick={handleGenerateJson}>Сгенерировать JSON</button>
-            {inputs.map((input, index) => (
-                <div key={index}>
-                    <input
-                        value={input.key}
-                        placeholder="Ключ"
-                        onChange={(e) => handleChange(index, e.target.value, input.value)}
-                    />
-                    <input
-                        value={input.value}
-                        placeholder="Значение"
-                        onChange={(e) => handleChange(index, input.key, e.target.value)}
-                    />
-                </div>
-            ))}
-
-            <pre>{JSON.stringify(objectData, null, 2)}</pre>
-        </div>
-    );
-}

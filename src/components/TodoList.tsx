@@ -27,7 +27,7 @@ type TodoListPropsType = {
     todo: TodoListProps
 }
 
-export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
+export const TodoList: FC<TodoListPropsType> = memo(({todo}) => {
 
     const [filterStatus, setFilter] = useState<FilterProps>("All");
     const [listRef] = useAutoAnimate<HTMLUListElement>();
@@ -57,34 +57,30 @@ export const TodoListRedux: FC<TodoListPropsType> = memo(({todo}) => {
         });
     };
 
+    const TaskElement = initFilteredTasks().length ? initFilteredTasks()?.map((t) => (
+        <Fragment key={t.id}>
 
-    const TaskElement = <Preloader width={100} height={100} isLoading={!initFilteredTasks().length} afterSpinner={() => (
-        initFilteredTasks().map((t) => (
-            <Fragment key={t.id}>
+            <Task
+                data={{
+                    title: t.title,
+                    id: t.id,
+                    entityStatus: t.entityStatus!,
+                    status: t.status,
+                    todoListId: todo.id,
+                }}
+            />
 
-                <Task
-                    data={{
-                        title: t.title,
-                        id: t.id,
-                        entityStatus: t.entityStatus!,
-                        status: t.status,
-                        todoListId: todo.id,
-                    }}
-                />
-
-                <Portal>
-                    <Snackbar open={t.entityStatus === 'failed'}>
-                        <Alert variant={'filled'} severity="error">
-                            Unable to update task {t.title} - Error has occurred!
-                        </Alert>
-                    </Snackbar>
-                </Portal>
+            <Portal>
+                <Snackbar open={t.entityStatus === 'failed'}>
+                    <Alert variant={'filled'} severity="error">
+                        Unable to update task {t.title} - Error has occurred!
+                    </Alert>
+                </Snackbar>
+            </Portal>
 
 
-            </Fragment>
-        ))
-    )}
-    />
+        </Fragment>
+    )) : <h3>No active tasks</h3>
 
 
     return (

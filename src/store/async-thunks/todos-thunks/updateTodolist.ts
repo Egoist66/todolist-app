@@ -8,6 +8,14 @@ import { handleThunkActions } from "../../../utils/utils";
 export const updateTodoList = (id: string, title: string): AppThunk => {
     return async (dispatch) => {
         try {
+
+            handleThunkActions({
+                'type': 'app',
+                dispatch,
+                successActionHandler: [() => SetAppStatusAC('loading')]
+            })
+
+
             const data = await todoListAPI.updateTodoList(id, title)
 
             handleThunkActions({

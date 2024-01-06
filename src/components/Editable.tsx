@@ -1,11 +1,13 @@
 import {ChangeEvent, FC, memo, useState} from "react";
 import Text from "../service-components/Text/Text";
 import { TextField } from "@material-ui/core";
+import {TaskStatuses} from "../api/todolist-tasks-api";
 
 type EditableProps = {
     title: string,
     todoListID: string
     taskID: string
+    status?: TaskStatuses
     editableType: 'p' | 'span' | 'h2' | 'h1'
     onSaveEdits: (_title: string, todoListID: string, id: string) => void,
 
@@ -16,7 +18,7 @@ type EditStateType = {
     title: string
 }
 
-const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskID, editableType}) => {
+const Editable: FC<EditableProps> = memo(({title, status, onSaveEdits, todoListID, taskID, editableType}) => {
     const [state, setState] = useState<EditStateType>({
         editMode: false,
         title: title
@@ -74,7 +76,7 @@ const Editable: FC<EditableProps> = memo(({title, onSaveEdits, todoListID, taskI
                 />
 
 
-            : <Text type={editableType} onClickHandler={activateEditMode}>{state.title}</Text>
+            : <Text txtdecor={status === 2 ? 'line-through' : 'none'} type={editableType} onClickHandler={activateEditMode}>{state.title}</Text>
     )
 })
 

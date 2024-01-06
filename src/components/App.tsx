@@ -2,7 +2,7 @@ import {FC} from "react";
 import {AppLayout} from "./AppLayout";
 
 
-export const AppRedux: FC = () => {
+export const App: FC = () => {
 
 
     return (

@@ -16,17 +16,17 @@ export const SnackErrorBar: FC<{status: string, error: string | null}> = ({statu
     }, [status, error])
 
     const handleClose = () => {
-        
+
         dispatch(SetAppErrorAC(null))
         dispatch(SetAppStatusAC('idle'))
-        
+
     }
 
 
     return (
         <>
         
-            {isOpen ? <Snackbar onClose={handleClose} autoHideDuration={4000}   open={isOpen}>
+            {isOpen ? <Snackbar onClose={handleClose} autoHideDuration={4000}  open={isOpen}>
             <Alert onClose={handleClose} variant={'filled'} severity="error">
                 {error} - Error has occurred!
             </Alert>

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {AppRedux} from "./components/AppRedux";
+import {App} from "./components/App";
 import {Provider} from "react-redux";
 import {store} from "./store/store";
 
 import './App.css'
 import './store/native-test/class'
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +15,9 @@ root.render(
 
   <Provider store={store}>
 
-      <AppRedux />
+      <BrowserRouter>
+          <App />
+      </BrowserRouter>
 
   </Provider>
   

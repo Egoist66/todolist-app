@@ -8,6 +8,7 @@ import {
 import {FC, memo} from "react";
 import MenuIcon from "@material-ui/icons/Menu";
 import {useStore} from "../hooks/useStore";
+import {NavLink} from "react-router-dom";
 
 export const Header: FC = memo(() => {
 
@@ -21,6 +22,9 @@ export const Header: FC = memo(() => {
                     <Typography variant="h6"></Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+
+                <NavLink end to={'/'}>Todolist</NavLink>
+                <NavLink end to={'/login'}>Login</NavLink>
             </AppBar>
         </>
     );
