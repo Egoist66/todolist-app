@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import {
     Button,
     Checkbox,
@@ -12,8 +12,15 @@ import {
 import Text from "../service-components/Text/Text";
 import {useFormik} from "formik";
 import {withFormikDevtools} from "formik-devtools-extension";
+import {useStore} from "../hooks/useStore";
+import {authApp, authMe} from "../store/async-thunks/auth-thunks/authApp";
+import {useNavigate} from "react-router-dom";
 
 const Login: FC = () => {
+    const {dispatch, useAppSelector} = useStore()
+    const navigate = useNavigate()
+    const {isAuth} = useAppSelector(state => state.auth)
+
     const formik = useFormik({
         validate: (values) => {
             if (!values.email.length) {
@@ -35,12 +42,25 @@ const Login: FC = () => {
             password: '',
             remember: true
         },
-        onSubmit: values => {
-            console.log(JSON.stringify(values, null, 2));
+        onSubmit: ({email, password, remember}, {resetForm}) => {
+            dispatch(authApp({remember, email, password}))
+            resetForm()
         },
     });
 
     withFormikDevtools(formik)
+
+    useEffect(() => {
+        dispatch(authMe())
+    }, [])
+
+    useEffect(() => {
+        if (isAuth){
+            navigate('/', {replace: true})
+        }
+    }, [isAuth])
+
+
 
     return (
         <Grid container justifyContent={'center'}>

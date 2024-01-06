@@ -13,6 +13,7 @@ import {PreloadedStore} from "../hooks/PreloadedStore";
 import {appReducer} from "./reducers/app-reducer";
 import {AppStatusActions} from "./actions/app-actions";
 import {AppDevModeAction, AppDevModeReducer, setDevMode} from "./reducers/app-devmode-reducer";
+import {loginReducer} from "./reducers/login-reducer";
 
 const {preloadStore, persist} = PreloadedStore()
 const sagaMiddleWare = createSagaMiddleware()
@@ -23,7 +24,9 @@ export const rootReducer = combineReducers({
     tasks: tasksReducer,
     ui: catchUIReducer,
     app: appReducer,
-    appDev: AppDevModeReducer
+    appDev: AppDevModeReducer,
+    auth: loginReducer
+
 })
 
 

@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import {useStore} from "../hooks/useStore";
 import {Header} from "./Header";
 import {Container, Grid} from "@material-ui/core";
@@ -13,29 +13,43 @@ import {v1} from "uuid";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {OfflineBoundary} from "../service-components/SnackBar/OfflineBoundary";
 import {AppRoutes} from "./AppRoutes";
+import {useLocation} from "react-router-dom";
+import {authMe} from "../store/async-thunks/auth-thunks/authApp";
 
 
 export const AppLayout: FC = () => {
-
-    const {useAppSelector, dispatch} = useStore()
+    const {dispatch, useAppSelector} = useStore()
     const {status, error} = useAppSelector(state => state.app)
+    const {pathname} = useLocation()
+    const {isAuth} = useAppSelector(state => state.auth)
 
 
     const {initDevMode} = useDevMode({
-        afterIsDevOff: () => dispatch(fetchTodos())
+        afterIsDevOff: () => () => {}
     })
 
+
+
+    useEffect(() => {
+        if (isAuth){
+            dispatch(fetchTodos())
+        }
+        dispatch(fetchTodos())
+    }, [isAuth]);
+    useEffect(() => {
+
+        dispatch(authMe())
+    }, [isAuth])
 
     return (
         <>
 
             <Header/>
 
-            {/*<Login />*/}
 
             <Container fixed>
                 <View _margin="30px 0px 0px 0px" id="form-view">
-                    <TodoForm
+                    {pathname === '/login' ? null : <TodoForm
                         placeholder="Enter a todo title"
                         formName={"Add new todo"}
                         onTodoFormHandler={(title: string) => {
@@ -44,7 +58,7 @@ export const AppLayout: FC = () => {
                                 afterIsDevOn: () => dispatch(SetTodolistAC(title, v1()))
                             })
                         }}
-                    />
+                    />}
                 </View>
             </Container>
 

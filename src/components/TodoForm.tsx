@@ -5,6 +5,7 @@ import {View} from "../service-components/View/View";
 import {LS} from "../utils/utils";
 import {Alert} from "@material-ui/lab";
 import {useOnline} from "@react-hooks-library/core";
+import {useStore} from "../hooks/useStore";
 
 type FormStateType = {
     title: string,
@@ -26,6 +27,9 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
     })
     const {error, title} = state
     const isAppOnline = useOnline()
+    const {useAppSelector} = useStore()
+    const {isAuth} = useAppSelector(state => state.auth)
+
 
 
     const onSetTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +87,7 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
                 }}
                 value={title}
                 onChange={onSetTitle}
+                disabled={!isAuth}
                 id="standard-basic"
                 label={placeholder}
             />
@@ -90,7 +95,7 @@ export const TodoForm: FC<TodoFormPropsType> = memo(({
 
             <Button
                 size={"small"}
-                disabled={isDeletedTodo}
+                disabled={(isDeletedTodo || !isAuth)}
                 color={error || title.length > 100 ? 'secondary' : 'primary'}
                 variant={"contained"}
                 onClick={addTask}>

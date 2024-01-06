@@ -9,7 +9,7 @@ import {InitDeleteAC} from "../../store/actions/todos-actions";
 export const SnackErrorBar: FC<{status: string, error: string | null}> = ({status, error}) => {
 
     
-    const {dispatch} = useStore()
+    const {dispatch, useAppSelector} = useStore()
 
     const isOpen = useMemo(() => {
         return (status === 'failed' || error !==  null)

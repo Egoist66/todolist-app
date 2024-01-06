@@ -8,6 +8,7 @@ type useDevModeProps = {
 export const useDevMode = ({afterIsDevOn, afterIsDevOff}: useDevModeProps = {}) => {
     const {useAppSelector} = useStore()
     const isDevMode = useAppSelector(state => state.appDev.dev)
+    const {isAuth} = useAppSelector(state => state.auth)
 
     const initDevMode = ({afterIsDevOn, afterIsDevOff}: useDevModeProps) => {
         if (isDevMode) {
@@ -31,12 +32,15 @@ export const useDevMode = ({afterIsDevOn, afterIsDevOff}: useDevModeProps = {}) 
 
                 return
             }
+
             if (afterIsDevOff){
                 afterIsDevOff()
             }
 
 
     }, [isDevMode])
+
+
 
     return {
         initDevMode

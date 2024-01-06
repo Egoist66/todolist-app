@@ -11,20 +11,29 @@ import {useStore} from "../hooks/useStore";
 import {NavLink} from "react-router-dom";
 
 export const Header: FC = memo(() => {
+    const {dispatch, useAppSelector} = useStore()
+
+    const {isAuth} = useAppSelector(state => state.auth)
+
 
     return (
         <>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
-                        <MenuIcon/>
+                        <NavLink style={{textDecoration: 'none', color: 'white', display: 'flex'}} end to={'/'}>
+                            <MenuIcon/>
+                        </NavLink>
+
                     </IconButton>
                     <Typography variant="h6"></Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit"><NavLink style={{textDecoration: 'none', color: 'white'}} end to={isAuth ? '/' : '/login'}>
+                        {isAuth ? 'LOGGEDIN': 'LOGIN'}
+                    </NavLink></Button>
                 </Toolbar>
 
-                <NavLink end to={'/'}>Todolist</NavLink>
-                <NavLink end to={'/login'}>Login</NavLink>
+
+
             </AppBar>
         </>
     );
