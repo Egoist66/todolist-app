@@ -15,11 +15,11 @@ export const AuthAppApi = {
     },
 
     async authMe() {
-        const {data} = await instance.get<AuthOperationResponse<{ id: number, email: string, login: string }>>('/auth/me')
+        const {data} = await instance.get<AuthOperationResponse<{ id: number, email: string, login: string }>>('auth/me')
         return data
     },
     async logout(){
-        const {data} = await instance.delete<AuthOperationResponse<{}>>('auth/me')
+        const {data} = await instance.delete<AuthOperationResponse<{}>>('auth/login')
         return data
 
 

@@ -1,7 +1,7 @@
 import {FC, lazy, Suspense} from "react";
 import {Route, Routes} from "react-router-dom";
 import Text from "../service-components/Text/Text";
-import {Spinner} from "../service-components/spinner/Spinner";
+import {Spinner} from "../service-components/Spinner/Spinner";
 
 const TodoList = lazy(() => import('./TodoListContainer'))
 const Login = lazy(() => import('./Login'))

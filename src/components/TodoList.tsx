@@ -20,7 +20,7 @@ import {v1} from "uuid";
 import {SnackTodoBar} from "../service-components/SnackBar/SnackBar";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {Alert} from "@material-ui/lab";
-import Preloader from "../service-components/preloader/preloader";
+import Preloader from "../service-components/Preloader/preloader";
 
 
 type TodoListPropsType = {

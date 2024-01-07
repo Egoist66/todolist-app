@@ -55,6 +55,36 @@ ul {
     animation: deleteTodo 1s ease alternate;
 }
 
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-500px);
+    opacity: 0;
+    visibility: hidden;
+    background: white;
+    transition: 0.4s all ease;
+    width: 250px;
+    color: black;
+    padding: 0px;
+    min-height: 100vh;
+    z-index: 2222222222;
+    box-shadow: none;
+
+}
+
+.open.sidebar {
+    box-shadow: 1px 1px 5px 1px lightgrey;
+   transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+    padding: 10px;
+    transition: 0.4s all ease;
+
+
+}
+
 @keyframes deleteTodo {
     0% {
         transform: translateX(50px);

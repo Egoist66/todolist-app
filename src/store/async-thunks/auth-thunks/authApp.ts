@@ -1,7 +1,8 @@
 import {AppThunk} from "../../store";
 import {AuthAppApi} from "../../../api/authApp-api";
-import {AuthMeAC, LoginAppAC} from "../../actions/app-actions";
-import {fetchTodos} from "../todos-thunks/fetchTodos";
+import {AuthMeAC, LoginAppAC, LogOutAppAC, SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
+import {handleThunkActions} from "../../../utils/utils";
+import {FetchTodosAC} from "../../actions/todos-actions";
 
 export type AuthAppProps = {
     email: string
@@ -15,12 +16,11 @@ export const authMe = (): AppThunk => {
         try {
 
             const data = await AuthAppApi.authMe()
-            if (data.resultCode === 0){
+            if (data.resultCode === 0) {
                 dispatch(AuthMeAC(data))
             }
 
-        }
-        catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -35,10 +35,49 @@ export const authApp = ({remember, password, email}: AuthAppProps): AppThunk => 
             })
             dispatch(LoginAppAC(data))
             dispatch(authMe())
-        }
-        catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
 }
 
+export const logOutApp = (): AppThunk => {
+    return async (dispatch) => {
+        try {
+            handleThunkActions({
+                type: 'app',
+                dispatch: dispatch,
+                successActionHandler: [() => SetAppStatusAC('loading')]
+            })
+            const data = await AuthAppApi.logout()
+
+            handleThunkActions({
+                type: 'app',
+                dispatch,
+                resultCode: data.resultCode,
+                appErrorActionHandler: [
+                    () => SetAppErrorAC(data.messages[0]),
+                    () => SetAppStatusAC('failed'),
+                ],
+                successActionHandler: [
+                    () => LogOutAppAC(data),
+                    () => SetAppStatusAC('succeeded')
+                ]
+
+            })
+
+
+        } catch (e: any) {
+
+            handleThunkActions({
+                'type': 'network',
+                dispatch,
+                serverErrorActionHandler: [
+                    () => SetAppStatusAC('failed'),
+                    () => SetAppErrorAC(e.message
+                )]
+            })
+
+        }
+    }
+}

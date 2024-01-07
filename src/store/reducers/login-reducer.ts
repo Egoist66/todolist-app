@@ -47,6 +47,7 @@ export const loginReducer = (state = initialState, action: AppStatusActions): Au
 
             return  {
                 ...state,
+                isAuth: false,
                 ...data
             }
         }
