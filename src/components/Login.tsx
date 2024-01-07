@@ -13,7 +13,7 @@ import Text from "../service-components/Text/Text";
 import {useFormik} from "formik";
 import {withFormikDevtools} from "formik-devtools-extension";
 import {useStore} from "../hooks/useStore";
-import {authApp, authMe} from "../store/async-thunks/auth-thunks/authApp";
+import {authApp} from "../store/async-thunks/auth-thunks/authApp";
 import {useNavigate} from "react-router-dom";
 
 const Login: FC = () => {
@@ -61,9 +61,6 @@ const Login: FC = () => {
         formik.resetForm()
     }, [resultCode])
 
-    useEffect(() => {
-        dispatch(authMe())
-    }, [])
 
     useEffect(() => {
         if (isAuth) {

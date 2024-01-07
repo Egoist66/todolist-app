@@ -36,10 +36,12 @@ export const AppLayout: FC = () => {
         }
         dispatch(fetchTodos())
     }, [isAuth]);
-    useEffect(() => {
 
+
+    useEffect(() => {
         dispatch(authMe())
-    }, [isAuth])
+    }, [])
+
 
     return (
         <>

@@ -1,7 +1,7 @@
 import {AppThunk} from "../../store";
 import {AuthAppApi} from "../../../api/authApp-api";
 import {AuthMeAC, isLoggingAC, LoginAppAC, LogOutAppAC, SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
-import {handleThunkActions} from "../../../utils/utils";
+import {handleThunkActions, LS} from "../../../utils/utils";
 
 export type AuthAppProps = {
     email: string
@@ -9,6 +9,7 @@ export type AuthAppProps = {
     remember: boolean,
     captcha?: string
 }
+const {save, remove} = LS()
 
 export const authMe = (): AppThunk => {
     return async (dispatch) => {
@@ -25,6 +26,8 @@ export const authMe = (): AppThunk => {
     }
 }
 export const authApp = ({remember, password, email}: AuthAppProps): AppThunk => {
+
+
     return async (dispatch) => {
         try {
             handleThunkActions({
@@ -56,7 +59,12 @@ export const authApp = ({remember, password, email}: AuthAppProps): AppThunk => 
                     () => SetAppStatusAC('succeeded'),
                     () => isLoggingAC(false)
                 ],
-                sideEffect: [() => dispatch(authMe())]
+                sideEffect: [() => {
+                    dispatch(authMe())
+                    save('app-auth', data.resultCode === 0 ? 'auth': 'not-auth', true)
+
+
+                }]
             })
 
         } catch (e: any) {
@@ -98,7 +106,10 @@ export const logOutApp = (): AppThunk => {
                 successActionHandler: [
                     () => LogOutAppAC(data),
                     () => SetAppStatusAC('succeeded')
-                ]
+                ],
+                sideEffect: [() => {
+                    remove('app-auth')
+                }]
 
             })
 
