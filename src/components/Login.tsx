@@ -19,7 +19,7 @@ import {useNavigate} from "react-router-dom";
 const Login: FC = () => {
     const {dispatch, useAppSelector} = useStore()
     const navigate = useNavigate()
-    const {isAuth} = useAppSelector(state => state.auth)
+    const {isAuth, resultCode, isLogging} = useAppSelector(state => state.auth)
 
     const formik = useFormik({
         validate: (values) => {
@@ -42,24 +42,34 @@ const Login: FC = () => {
             password: '',
             remember: true
         },
+
         onSubmit: ({email, password, remember}, {resetForm}) => {
+
+
             dispatch(authApp({remember, email, password}))
-            resetForm()
+
+
         },
     });
 
     withFormikDevtools(formik)
 
     useEffect(() => {
+        if (resultCode === 10) {
+            return
+        }
+        formik.resetForm()
+    }, [resultCode])
+
+    useEffect(() => {
         dispatch(authMe())
     }, [])
 
     useEffect(() => {
-        if (isAuth){
+        if (isAuth) {
             navigate('/', {replace: true})
         }
     }, [isAuth])
-
 
 
     return (
@@ -100,7 +110,8 @@ const Login: FC = () => {
                                 label={'Remember me'}
                             />
 
-                            <Button color={'primary'} variant={'contained'} type={'submit'}>Login</Button>
+                            <Button color={'primary'} variant={'contained'}
+                                    type={'submit'}>{isLogging ? 'Logging in...' : 'Log in'}</Button>
                         </FormGroup>
                     </FormControl>
                 </form>

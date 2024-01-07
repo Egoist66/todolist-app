@@ -6,7 +6,9 @@ export enum AppActionsNames  {
     "APP/SET-ERROR" = "APP/SET-ERROR",
     "APP/LOGIN" = "APP/LOGIN",
     "APP/LOGINOUT" = "APP/LOGINOUT",
-    "APP/AUHTME" = "APP/AUHTME"
+    "APP/AUHTME" = "APP/AUHTME",
+    "APP/ISLOGGING" = "APP/ISLOGGING"
+
 }
 
 
@@ -15,6 +17,7 @@ export type AppStatusActions = ReturnType<typeof SetAppStatusAC>
     | ReturnType<typeof LoginAppAC>
     | ReturnType<typeof LogOutAppAC>
     | ReturnType<typeof AuthMeAC>
+    | ReturnType<typeof isLoggingAC>
 
 
 export const SetAppStatusAC = (status: Statuses) => ({
@@ -33,4 +36,8 @@ export const LogOutAppAC = (data: AuthInitialStateType) => ({
 
 export const AuthMeAC = (data: AuthInitialStateType) => ({
     type: AppActionsNames["APP/AUHTME"], payload: {data}
+}) as const
+
+export const isLoggingAC = (isLogging: boolean) => ({
+    type: AppActionsNames["APP/ISLOGGING"], payload: {isLogging}
 }) as const

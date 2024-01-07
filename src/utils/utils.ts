@@ -114,6 +114,7 @@ type
                     dispatch(h())
 
                     if (sideEffect) {
+
                         sideEffect[0]()
                     }
 

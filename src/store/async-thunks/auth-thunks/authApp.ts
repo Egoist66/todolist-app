@@ -1,8 +1,7 @@
 import {AppThunk} from "../../store";
 import {AuthAppApi} from "../../../api/authApp-api";
-import {AuthMeAC, LoginAppAC, LogOutAppAC, SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
+import {AuthMeAC, isLoggingAC, LoginAppAC, LogOutAppAC, SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
 import {handleThunkActions} from "../../../utils/utils";
-import {FetchTodosAC} from "../../actions/todos-actions";
 
 export type AuthAppProps = {
     email: string
@@ -28,15 +27,51 @@ export const authMe = (): AppThunk => {
 export const authApp = ({remember, password, email}: AuthAppProps): AppThunk => {
     return async (dispatch) => {
         try {
+            handleThunkActions({
+                type: 'app',
+                dispatch: dispatch,
+                successActionHandler: [
+                    () => SetAppStatusAC('loading'),
+                    () => isLoggingAC(true)
+                ]
+            })
             const data = await AuthAppApi.login({
                 password,
                 email,
                 remember
             })
-            dispatch(LoginAppAC(data))
-            dispatch(authMe())
-        } catch (e) {
+
+            handleThunkActions({
+                type: 'app',
+                dispatch: dispatch,
+                resultCode: data.resultCode,
+                appErrorActionHandler: [
+                    () => SetAppErrorAC(data.messages[0]),
+                    () => LoginAppAC(data),
+                    () => SetAppStatusAC('failed'),
+                    () => isLoggingAC(false)
+                ],
+                successActionHandler: [
+                    () => LoginAppAC(data),
+                    () => SetAppStatusAC('succeeded'),
+                    () => isLoggingAC(false)
+                ],
+                sideEffect: [() => dispatch(authMe())]
+            })
+
+        } catch (e: any) {
             console.log(e)
+            handleThunkActions({
+                type: 'network',
+                dispatch,
+                serverErrorActionHandler: [
+                    () => SetAppStatusAC('failed'),
+                    () => SetAppErrorAC(e.message),
+                    () => isLoggingAC(false)
+
+                ]
+
+            })
         }
     }
 }
@@ -57,6 +92,7 @@ export const logOutApp = (): AppThunk => {
                 resultCode: data.resultCode,
                 appErrorActionHandler: [
                     () => SetAppErrorAC(data.messages[0]),
+                    () => LogOutAppAC(data),
                     () => SetAppStatusAC('failed'),
                 ],
                 successActionHandler: [
@@ -74,8 +110,7 @@ export const logOutApp = (): AppThunk => {
                 dispatch,
                 serverErrorActionHandler: [
                     () => SetAppStatusAC('failed'),
-                    () => SetAppErrorAC(e.message
-                )]
+                    () => SetAppErrorAC(e.message)]
             })
 
         }

@@ -4,6 +4,7 @@ export type AuthInitialStateType = {
     resultCode: number
     messages: string[],
     isAuth?: boolean
+    isLogging?: boolean
     fieldsErrors: string[],
     data: {
         id?: number,
@@ -16,6 +17,7 @@ const initialState = {
     resultCode: 0,
     messages: [],
     isAuth: false,
+    isLogging: false,
     fieldsErrors: [],
     data: {}
 } as AuthInitialStateType
@@ -39,6 +41,14 @@ export const loginReducer = (state = initialState, action: AppStatusActions): Au
             return  {
                 ...state,
                 ...data
+            }
+        }
+
+        case AppActionsNames["APP/ISLOGGING"]: {
+            return  {
+                ...state,
+                isLogging: action.payload.isLogging
+
             }
         }
 

@@ -35,7 +35,7 @@ export const fetchTodos = (): AppThunk => {
             handleThunkActions({
                 'type': 'network',
                 dispatch,
-                serverErrorActionHandler: [() => SetAppStatusAC('failed'), () => SetAppErrorAC(e.message)]
+                serverErrorActionHandler: [() => SetAppStatusAC('failed'), () => SetAppErrorAC(`${e.message} - not authorized or wrong request URL`)]
             })
 
 
