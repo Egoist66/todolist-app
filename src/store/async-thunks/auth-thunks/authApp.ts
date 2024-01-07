@@ -1,6 +1,14 @@
 import {AppThunk} from "../../store";
 import {AuthAppApi} from "../../../api/authApp-api";
-import {AuthMeAC, isLoggingAC, LoginAppAC, LogOutAppAC, SetAppErrorAC, SetAppStatusAC} from "../../actions/app-actions";
+import {
+    AuthMeAC,
+    initializeAppAC,
+    isLoggingAC,
+    LoginAppAC,
+    LogOutAppAC,
+    SetAppErrorAC,
+    SetAppStatusAC
+} from "../../actions/app-actions";
 import {handleThunkActions, LS} from "../../../utils/utils";
 
 export type AuthAppProps = {
@@ -18,6 +26,8 @@ export const authMe = (): AppThunk => {
             const data = await AuthAppApi.authMe()
             if (data.resultCode === 0) {
                 dispatch(AuthMeAC(data))
+                //save('app-auth', data.resultCode === 0 ? 'auth': 'not-auth', true)
+
             }
 
         } catch (e) {
@@ -61,7 +71,7 @@ export const authApp = ({remember, password, email}: AuthAppProps): AppThunk => 
                 ],
                 sideEffect: [() => {
                     dispatch(authMe())
-                    save('app-auth', data.resultCode === 0 ? 'auth': 'not-auth', true)
+                    //save('app-auth', data.resultCode === 0 ? 'auth': 'not-auth', true)
 
 
                 }]
@@ -124,6 +134,24 @@ export const logOutApp = (): AppThunk => {
                     () => SetAppErrorAC(e.message)]
             })
 
+        }
+    }
+}
+
+export const initApp = () : AppThunk => {
+    return  async (dispatch) => {
+        try {
+            const data = await AuthAppApi.authMe()
+            if(data.resultCode === 0){
+                dispatch(AuthMeAC(data))
+            }
+
+        }
+        catch (e){
+            console.log(e)
+        }
+        finally {
+            dispatch(initializeAppAC(true))
         }
     }
 }

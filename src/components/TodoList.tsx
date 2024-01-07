@@ -1,5 +1,5 @@
 import {FilterProps, TodoListProps} from "../types/Types";
-import {FC, Fragment, memo, useState} from "react";
+import {FC, Fragment, memo, useEffect, useState} from "react";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import {Task} from "./Task";
 import Editable from "./Editable";
@@ -21,6 +21,7 @@ import {SnackTodoBar} from "../service-components/SnackBar/SnackBar";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {Alert} from "@material-ui/lab";
 import Preloader from "../service-components/Preloader/preloader";
+import {useNavigate} from "react-router-dom";
 
 
 type TodoListPropsType = {
@@ -34,12 +35,22 @@ export const TodoList: FC<TodoListPropsType> = memo(({todo}) => {
 
     const {useAppSelector, dispatch} = useStore()
     const tasks = useAppSelector(state => state.tasks)
+    const {isAuth} = useAppSelector(state => state.auth)
+    const navigate = useNavigate()
 
     const {onDeleteAllTasks} = useTodoList()
     const {initDevMode} = useDevMode({
         afterIsDevOff: () => dispatch(fetchTasks(todo.id))
 
     })
+
+    useEffect(() => {
+        if (!isAuth) {
+
+            navigate('/login', {replace: true})
+        }
+
+    }, [isAuth])
 
 
     const initFilteredTasks = () => {

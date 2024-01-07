@@ -13,13 +13,13 @@ import Text from "../service-components/Text/Text";
 import {useFormik} from "formik";
 import {withFormikDevtools} from "formik-devtools-extension";
 import {useStore} from "../hooks/useStore";
-import {authApp} from "../store/async-thunks/auth-thunks/authApp";
+import {authApp, authMe} from "../store/async-thunks/auth-thunks/authApp";
 import {useNavigate} from "react-router-dom";
 
 const Login: FC = () => {
     const {dispatch, useAppSelector} = useStore()
     const navigate = useNavigate()
-    const {isAuth, resultCode, isLogging} = useAppSelector(state => state.auth)
+    const {isAuth, isLogging} = useAppSelector(state => state.auth)
 
     const formik = useFormik({
         validate: (values) => {
@@ -43,23 +43,12 @@ const Login: FC = () => {
             remember: true
         },
 
-        onSubmit: ({email, password, remember}, {resetForm}) => {
-
-
+        onSubmit: ({email, password, remember}) => {
             dispatch(authApp({remember, email, password}))
-
-
         },
     });
 
     withFormikDevtools(formik)
-
-    useEffect(() => {
-        if (resultCode === 10) {
-            return
-        }
-        formik.resetForm()
-    }, [resultCode])
 
 
     useEffect(() => {

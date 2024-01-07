@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react";
 import {useStore} from "../hooks/useStore";
 import {Header} from "./Header";
-import {Container, Grid} from "@material-ui/core";
+import {CircularProgress, Container, Grid} from "@material-ui/core";
 import {View} from "../service-components/View/View";
 import {TodoForm} from "./TodoForm";
 import {fetchTodos} from "../store/async-thunks/todos-thunks/fetchTodos";
@@ -13,8 +13,8 @@ import {v1} from "uuid";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {OfflineBoundary} from "../service-components/SnackBar/OfflineBoundary";
 import {AppRoutes} from "./AppRoutes";
-import {useLocation} from "react-router-dom";
-import {authMe} from "../store/async-thunks/auth-thunks/authApp";
+import {useLocation, useNavigate} from "react-router-dom";
+import {authMe, initApp} from "../store/async-thunks/auth-thunks/authApp";
 
 
 export const AppLayout: FC = () => {
@@ -22,27 +22,44 @@ export const AppLayout: FC = () => {
     const {status, error} = useAppSelector(state => state.app)
     const {pathname} = useLocation()
     const {isAuth} = useAppSelector(state => state.auth)
-
+    const {isAppInitialized} = useAppSelector(state => state.app)
+    const location = useLocation()
 
     const {initDevMode} = useDevMode({
-        afterIsDevOff: () => () => {}
+        afterIsDevOff: () => () => {
+        }
     })
 
 
-
     useEffect(() => {
-        if (isAuth){
+        const isRoot = location.pathname === '/'
+        if(isRoot || isAuth){
             dispatch(fetchTodos())
         }
-        dispatch(fetchTodos())
+
     }, [isAuth]);
 
 
+
     useEffect(() => {
-        dispatch(authMe())
+        dispatch(initApp())
     }, [])
 
 
+
+    if (!isAppInitialized) {
+        return (
+            <div style={{
+                position: 'fixed',
+                width: '100%',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50px, 0px)'
+            }}>
+                <CircularProgress/>
+            </div>
+        )
+    }
     return (
         <>
 

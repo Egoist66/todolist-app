@@ -8,14 +8,13 @@ import Text from "../service-components/Text/Text";
 import {View} from "../service-components/View/View";
 import {logOutApp} from "../store/async-thunks/auth-thunks/authApp";
 import {LS} from "../utils/utils";
+import {Label} from "@material-ui/icons";
 
 export const Header: FC = () => {
     const {useAppSelector, dispatch} = useStore()
     const {isAuth, data} = useAppSelector(state => state.auth)
     const [isOpen, setOpen] = useState<boolean>(false)
-    const navigate = useNavigate()
 
-    const {get, exist} = LS()
 
     const toggleBar = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
@@ -44,13 +43,6 @@ export const Header: FC = () => {
         }
     }, [isOpen])
 
-    useEffect(() => {
-        if(!exist('app-auth')){
-
-            navigate('/login', {replace: true})
-        }
-
-    }, [get('app-auth')])
 
     return (
         <>
@@ -60,26 +52,25 @@ export const Header: FC = () => {
                         e.stopPropagation()
                         setOpen(isOpen => !isOpen)
                     }} edge="start" color="inherit" aria-label="menu">
-                        <NavLink style={{textDecoration: 'none', color: 'white', display: 'flex'}} end to={'/'}>
-                        </NavLink>
+
 
                         <MenuIcon/>
 
                     </IconButton>
                     <Typography variant="h6"></Typography>
-                    <Button color="inherit"><
-                        NavLink style={{textDecoration: 'none', color: 'white'}} end
-                                to={isAuth ? '/' : '/login'}>
-                        {isAuth ? 'LOGGEDIN' : 'LOGIN'}
-                    </NavLink></Button>
-                </Toolbar>
 
+                    {!isAuth ?<Button variant={'text'}>
+                        <NavLink style={{color: 'white', textDecoration: 'none'}} to={'/login'}>{!isAuth ? 'Log In' : ''}</NavLink>
+                    </Button> : null }
+                </Toolbar>
 
             </AppBar>
 
 
-            {isAuth ?  <SideBar isOpen={isOpen}>
-
+            {isAuth ? <SideBar isOpen={isOpen}>
+                <Typography color={'textSecondary'} variant={'h6'}>
+                    <b>{isAuth ? 'LOGGED IN' : null}</b>
+                </Typography>
                 <View>
                     <Text _color={'#3F51B5'}>User ID - {data.id}</Text>
                     <Text _color={'#3F51B5'}>Login - {data.login}</Text>
@@ -87,7 +78,7 @@ export const Header: FC = () => {
                 </View>
                 <Button onClick={() => dispatch(logOutApp())} color={'secondary'} variant={'outlined'}>Log Out</Button>
 
-            </SideBar>: null}
+            </SideBar> : null}
 
         </>
     );
