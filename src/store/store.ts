@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {todolistReducer} from "./reducers/todolist-reducer";
 import {tasksReducer} from "./reducers/task-reducer";
 import thunk, {ThunkAction} from 'redux-thunk'
@@ -31,7 +31,7 @@ export const rootReducer = combineReducers({
 
 
 const preloadedState: () => AppRootState = preloadStore('root')
-export const store = createStore(
+export const store = legacy_createStore(
     rootReducer,
     preloadedState(),
     composeWithDevTools(

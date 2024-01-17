@@ -13,6 +13,7 @@ export const AppRoutes: FC = () => {
             <Routes>
                 <Route path={'/login'} element={<Login />} />
                 <Route index element={<TodoList />} />
+                <Route path="*" element={<h2>404 - Not found</h2>} />
             </Routes>
         </Suspense>
     )

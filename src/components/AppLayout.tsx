@@ -13,9 +13,9 @@ import {v1} from "uuid";
 import {Progress} from "../service-components/SnackBar/Progress";
 import {OfflineBoundary} from "../service-components/SnackBar/OfflineBoundary";
 import {AppRoutes} from "./AppRoutes";
-import {useLocation, useNavigate} from "react-router-dom";
-import {authMe, initApp} from "../store/async-thunks/auth-thunks/authApp";
-
+import { useLocation } from "react-router-dom";
+import { initApp } from "../store/async-thunks/auth-thunks/authApp";
+import {Helmet} from 'react-helmet'
 
 export const AppLayout: FC = () => {
     const {dispatch, useAppSelector} = useStore()
@@ -63,12 +63,14 @@ export const AppLayout: FC = () => {
     return (
         <>
 
+            <Helmet>
+                <title>Notes</title>
+            </Helmet>
             <Header/>
-
 
             <Container fixed>
                 <View _margin="30px 0px 0px 0px" id="form-view">
-                    {pathname === '/login' ? null : <TodoForm
+                    {pathname === '/login' || pathname.length > 7 ? null : <TodoForm
                         placeholder="Enter a todo title"
                         formName={"Add new todo"}
                         onTodoFormHandler={(title: string) => {

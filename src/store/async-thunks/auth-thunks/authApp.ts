@@ -1,5 +1,4 @@
 import {AppThunk} from "../../store";
-import {AuthAppApi} from "../../../api/authApp-api";
 import {
     AuthMeAC,
     initializeAppAC,
@@ -10,6 +9,7 @@ import {
     SetAppStatusAC
 } from "../../actions/app-actions";
 import {handleThunkActions, LS} from "../../../utils/utils";
+import { AuthAppApi } from "../../../api/auth-app-api";
 
 export type AuthAppProps = {
     email: string
