@@ -50,7 +50,12 @@ store.dispatch(setDevMode(false))
 sagaMiddleWare.run(rootSaga)
 
 
-export type AppActions = ActionTasksTypes | ActionTodosTypes | AppStatusActions | AppDevModeAction
+export type AppActions = 
+ActionTasksTypes | 
+ActionTodosTypes | 
+AppStatusActions | 
+AppDevModeAction
+
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
     AppRootState,
