@@ -46,7 +46,7 @@ export const Header: FC = () => {
 
     return (
         <>
-            <AppBar color='primary' position="sticky">
+            <AppBar position="static">
                 <Toolbar>
                     <IconButton disabled={!isAuth} onClick={(e) => {
                         e.stopPropagation()

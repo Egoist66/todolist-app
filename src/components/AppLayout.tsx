@@ -63,9 +63,9 @@ export const AppLayout: FC = () => {
     return (
         <>
 
-            <Helmet>
-                <title>Notes</title>
-            </Helmet>
+           
+            <Progress reason={status === "loading"}/>
+
             <Header/>
 
             <Container fixed>
@@ -92,7 +92,6 @@ export const AppLayout: FC = () => {
             </Container>
 
             {<SnackErrorBar error={error} status={status}/>}
-            <Progress reason={status === "loading"}/>
             <OfflineBoundary/>
 
 
