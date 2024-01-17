@@ -66,6 +66,10 @@ export const AppLayout: FC = () => {
            
             <Progress reason={status === "loading"}/>
 
+            <Helmet>
+                <title>Notes</title>
+           </Helmet>
+
             <Header/>
 
             <Container fixed>
